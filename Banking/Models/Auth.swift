@@ -34,7 +34,7 @@ class Auth: NSObject, ObservableObject {
             self.basiq_token = "token from api key"
             
             //        Initialize firebase
-            //        FirebaseApp.configure()
+            FirebaseApp.configure()
         }
     }
 }
