@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
 
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        //        Initialize firebase
+        FirebaseApp.configure()
+        
         do {
             try Auth.initialize(basiq_api_key: "")
             return true

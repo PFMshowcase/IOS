@@ -9,7 +9,7 @@ import Foundation
 
 /* =====================================================
  
-    Auth Protocols and Errors
+    Auth Types and Errors
  
    ===================================================== */
 
@@ -18,6 +18,21 @@ enum AuthError: Error {
     case alreadyInitialized
     case notInitialized
     case alreadySignedIn
+    case incorrectPin
+    case biometricAuthFailed
+    case biometricsNotAvailable
+    case generic
+}
+
+enum AuthBiometricFlag {
+    case faceId
+    case touchId
+}
+
+enum AuthSignInMethods {
+    case biometric
+    case password
+    case pin
 }
 
 @objc protocol UserType {
@@ -27,4 +42,30 @@ enum AuthError: Error {
     var totalBalance: Double { get }
     var accounts: [Account] { get }
     var transactions: [Transaction] { get }
+}
+
+/* =====================================================
+ 
+    Keychain Types and Errors
+ 
+   ===================================================== */
+
+struct KeychainMethods {
+    enum write {
+        case create
+        case update
+    }
+    
+    enum read {
+        case read
+    }
+    
+    enum delete {
+        case delete
+    }
+}
+
+enum KeychainError: Error {
+    case operation
+    case valuesNotCorrect
 }

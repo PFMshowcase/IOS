@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct Signing: View {
+struct SigningView: View {
     @State var email: String = ""
     @State var password: String = ""
     @StateObject var auth: Auth
     
     private func submit () {
         do {
-            try auth.signIn(username: email, password: password)
+            try auth.signIn(.faceId)
         } catch {
             print("Error signing in")
         }

@@ -28,20 +28,19 @@ enum Cabin: String {
 }
 
 extension Font.TextStyle {
-    
 //    This should *only* be used for the custom Font extensions
     var size: CGFloat {
         switch self {
-        case .title: return 40
-        case .title2: return 28
-        case .title3: return 20
-        case .body: return 14
-        case .caption: return 12
-        case .caption2: return 10
-        
-//        Disregard other font types and unknown (return body)
-        case .largeTitle, .headline, .subheadline, .callout, .footnote: return 14
-        @unknown default: return 14
+            case .title: return 40
+            case .title2: return 28
+            case .title3: return 20
+            case .body: return 14
+            case .caption: return 12
+            case .caption2: return 10
+            
+//            Disregard other font types and unknown (return body)
+            case .largeTitle, .headline, .subheadline, .callout, .footnote: return 14
+            @unknown default: return 14
         }
     }
 }
