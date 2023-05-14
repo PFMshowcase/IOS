@@ -24,6 +24,11 @@ enum AuthError: Error {
     case generic
 }
 
+enum AuthMethods {
+    case logIn
+    case create
+}
+
 enum AuthBiometricFlag {
     case biometrics
 }

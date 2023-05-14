@@ -7,6 +7,7 @@
 
 import Foundation
 import LocalAuthentication
+import SwiftUI
 
 
 /* =====================================================
@@ -16,7 +17,6 @@ import LocalAuthentication
    ===================================================== */
 
 extension Auth {
-    
 //    Base sign in func, takes username and password and signs into
 //    Firebase and retrieves the basiq user id
     func signIn (username: String, password: String) throws -> Void {
@@ -97,13 +97,8 @@ extension Auth {
     }
     
 //    Func for retrieving the preferred sign in method
-    func get_preferred_sign_in_method () -> AuthSignInMethods {
-        let user_default: AuthSignInMethods? = defaults.object(forKey:"preferred-sign-in") as? AuthSignInMethods
-        
-        return user_default ?? AuthSignInMethods.password
-    }
-    
-    func get_available_sign_in_method () -> [AuthSignInMethods]? {
+    static func get_available_sign_in_method () -> [AuthSignInMethods]? {
+        let defaults = UserDefaults.standard
         let user_default: [AuthSignInMethods]? = defaults.object(forKey: "available-sign-in") as? [AuthSignInMethods]
         
         return user_default

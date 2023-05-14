@@ -14,7 +14,7 @@ struct ContentView: View {
         if let current = auth.current {
             Home(current)
         } else {
-            SigningView(auth: auth)
+            SigningView(auth)
         }
     }
 }

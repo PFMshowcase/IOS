@@ -19,9 +19,6 @@ class Auth: NSObject, ObservableObject {
 //    Singleton vars
     private static var singleton:Auth?
     
-//    User Defaults
-    internal let defaults = UserDefaults.standard
-    
 //    Current User & observation
     @Published @objc dynamic var current: UserType? = nil
     private var observation: NSKeyValueObservation?
