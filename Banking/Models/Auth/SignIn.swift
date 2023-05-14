@@ -66,21 +66,25 @@ extension Auth {
             var error: AuthError?
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-                if success {
+                DispatchQueue.main.async {
+                    if success {
 //                    TODO: Figure out how to propogate errors here instead of asigning an arbitrary error
-                    guard let (username, pswrd) = try? self.getUserPassKeychain() else {
-                        error = AuthError.generic
-                        return
+                        guard let (username, pswrd) = try? self.getUserPassKeychain() else {
+                            error = AuthError.generic
+                            return
+                        }
+                        
+                        
+                        let res: Void? = try? self.signIn(username: username, password: pswrd)
+                        
+                        
+                        guard res != nil else {
+                            error = AuthError.generic
+                            return
+                        }
+                    } else {
+                        error = AuthError.biometricAuthFailed
                     }
-                    
-                    let res: Void? = try? self.signIn(username: username, password: pswrd)
-                    
-                    guard res != nil else {
-                        error = AuthError.generic
-                        return
-                    }
-                } else {
-                    error = AuthError.biometricAuthFailed
                 }
             }
             
@@ -97,5 +101,11 @@ extension Auth {
         let user_default: AuthSignInMethods? = defaults.object(forKey:"preferred-sign-in") as? AuthSignInMethods
         
         return user_default ?? AuthSignInMethods.password
+    }
+    
+    func get_available_sign_in_method () -> [AuthSignInMethods]? {
+        let user_default: [AuthSignInMethods]? = defaults.object(forKey: "available-sign-in") as? [AuthSignInMethods]
+        
+        return user_default
     }
 }

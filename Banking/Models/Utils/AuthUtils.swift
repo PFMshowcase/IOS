@@ -25,8 +25,7 @@ enum AuthError: Error {
 }
 
 enum AuthBiometricFlag {
-    case faceId
-    case touchId
+    case biometrics
 }
 
 enum AuthSignInMethods {

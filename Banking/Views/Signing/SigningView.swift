@@ -14,15 +14,17 @@ struct SigningView: View {
     
     private func submit () {
         do {
-            try auth.signIn(.faceId)
-        } catch {
+//            try auth.signIn(username: email, password: password)
+            try auth.signIn(.biometrics)
+        } catch let err {
             print("Error signing in")
+            print(err)
         }
     }
     
     var body: some View {
         VStack {
-            Text("tezxt")
+            Text("text")
             TextField("Email", text: $email)
             TextField("Password", text: $password)
             Button("Submit!", action: submit)
