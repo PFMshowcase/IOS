@@ -31,6 +31,7 @@ enum AuthMethods {
 
 enum AuthBiometricFlag {
     case biometrics
+    case noBiometrics
 }
 
 enum AuthSignInMethods {

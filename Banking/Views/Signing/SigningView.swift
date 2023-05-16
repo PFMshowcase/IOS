@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SigningView: View {
-    @State var email: String = ""
-    @State var password: String = ""
     @State var method: AuthMethods
     var auth: Auth
     
@@ -65,69 +63,6 @@ struct SigningView: View {
     }
 }
 
-struct SignInFlow: View {
-    let preferred_auth = Auth.get_available_sign_in_method()
-    let auth: Auth
-    
-    private func userPass () -> some View {
-        @State var email: String = ""
-        @State var password: String = ""
-        
-        func sign_in_with_email_pass () {
-            do {
-                try auth.signIn(username: email, password: password)
-            } catch {
-//                Handle incorrect email and password (10 attempts before time out?)
-                print("error signing in with email and password")
-            }
-        }
-        
-        return VStack {
-            Text("Email and Password")
-            TextField("Email", text: $email)
-            TextField("Password", text: $password)
-            Button("Submit", action: sign_in_with_email_pass)
-        }
-    }
-    
-    private func pin () -> some View {
-        @State var input_pin: String = ""
-        
-        func sign_in_with_pin () {
-            do {
-                try auth.signIn(pin: input_pin)
-            } catch {
-//                Handle incorrect pin (5 attempts before reverting to email and pass)
-                print("error signing in with pin")
-            }
-        }
-        
-        return VStack {
-            Text("pin")
-            TextField("Pin", text: $input_pin)
-            Button("Submit", action: sign_in_with_pin)
-        }
-    }
-    
-    var body: some View {
-        if preferred_auth == nil {
-            userPass()
-        } else if preferred_auth!.contains(.biometric) {
-            pin()
-                .onAppear() {
-                    do {
-                        try auth.signIn(.biometrics)
-                    } catch {
-                        print("FaceId failed, reverting to pin")
-                    }
-                }
-        } else if preferred_auth!.contains(.pin) {
-            pin()
-        } else {
-            userPass()
-        }
-    }
-}
 
 
 //struct Signing_Preview: PreviewProvider {

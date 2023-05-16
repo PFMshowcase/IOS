@@ -7,7 +7,6 @@
 
 import Foundation
 import LocalAuthentication
-import SwiftUI
 
 
 /* =====================================================
@@ -25,10 +24,10 @@ extension Auth {
         }
         
         if self.preview {
-            print("test " + username + password)
             current = UserDetails(preview: true)
         }
         
+//        TODO: Connect to API's to grab needed data
 //        Sign into GCP identity, will return an auth object which we can pass to UserDetails
 //        Information needed:
 //            - email: String
@@ -94,13 +93,5 @@ extension Auth {
         } else {
             throw AuthError.biometricsNotAvailable
         }
-    }
-    
-//    Func for retrieving the preferred sign in method
-    static func get_available_sign_in_method () -> [AuthSignInMethods]? {
-        let defaults = UserDefaults.standard
-        let user_default: [AuthSignInMethods]? = defaults.object(forKey: "available-sign-in") as? [AuthSignInMethods]
-        
-        return user_default
     }
 }

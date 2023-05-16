@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E13E4EA2A115EE800A2552E /* SignInFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E13E4E92A115EE800A2552E /* SignInFlowView.swift */; };
+		6E13E4EC2A115EF600A2552E /* CreateFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E13E4EB2A115EF600A2552E /* CreateFlowView.swift */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
 		6EAD85612A0CD33A0064E595 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85602A0CD33A0064E595 /* SDWebImageSwiftUI */; };
 		6EAD85642A0CD38E0064E595 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85632A0CD38E0064E595 /* SDWebImageSVGCoder */; };
@@ -97,6 +99,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E13E4E92A115EE800A2552E /* SignInFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFlowView.swift; sourceTree = "<group>"; };
+		6E13E4EB2A115EF600A2552E /* CreateFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlowView.swift; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EAD85942A0CFF7A0064E595 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -202,6 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				6EAD85972A0E049D0064E595 /* SigningView.swift */,
+				6E13E4E92A115EE800A2552E /* SignInFlowView.swift */,
+				6E13E4EB2A115EF600A2552E /* CreateFlowView.swift */,
 			);
 			path = Signing;
 			sourceTree = "<group>";
@@ -538,6 +544,7 @@
 			files = (
 				6EF2991B29E69EEA00D91255 /* ContentView.swift in Sources */,
 				6EAD85982A0E049D0064E595 /* SigningView.swift in Sources */,
+				6E13E4EA2A115EE800A2552E /* SignInFlowView.swift in Sources */,
 				6EC362B929F7D5AA00541040 /* Insights.swift in Sources */,
 				6EAD859D2A0E53F80064E595 /* Colours.swift in Sources */,
 				6EAD85A72A0F6B600064E595 /* SignUp.swift in Sources */,
@@ -549,6 +556,7 @@
 				6EF2991929E69EEA00D91255 /* BankingApp.swift in Sources */,
 				6EAD85A52A0F5DF00064E595 /* SignIn.swift in Sources */,
 				6EAD859B2A0E53C10064E595 /* TextUtils.swift in Sources */,
+				6E13E4EC2A115EF600A2552E /* CreateFlowView.swift in Sources */,
 				6EC362AD29F7B5D100541040 /* AccountsView.swift in Sources */,
 				6EC362B529F7BCF900541040 /* Transaction.swift in Sources */,
 				6EC362BB2A090D8000541040 /* FrameUtils.swift in Sources */,

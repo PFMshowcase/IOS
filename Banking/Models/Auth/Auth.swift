@@ -48,8 +48,8 @@ class Auth: NSObject, ObservableObject {
 
 /* =====================================================
  
-    Auth extension adding the ability to call functions
-    when Auth.current updates
+    Creating an observer function which will call a
+    provided function when self.current changes
  
    ===================================================== */
     
@@ -61,11 +61,10 @@ extension Auth {
     }
 }
 
-
-
 /* =====================================================
  
-    Extending Auth to add singleton functions
+    Static functions for accessing and creating the
+    Auth singleton
  
    ===================================================== */
 
@@ -89,15 +88,37 @@ extension Auth {
     }
 }
 
-    /* =====================================================
-     
-     Internal factory for creating the current users details
-     
-     ===================================================== */
+/* =====================================================
+ 
+    Static functions for getting and setting available
+    sign in methods from UserDefaults
+ 
+ ===================================================== */
 
 extension Auth {
+    private static let defaults = UserDefaults.standard
+    
+    static func create_available_sign_in_method (_ methods: [AuthSignInMethods]) {
+        defaults.set(methods, forKey: "available-sign-in")
+    }
+
+    static func get_available_sign_in_method () -> [AuthSignInMethods]? {
+        return defaults.object(forKey: "available-sign-in") as? [AuthSignInMethods]
+    }
+}
+
+/* =====================================================
+ 
+ Internal factory for creating the current users details
+ 
+ ===================================================== */
+
+extension Auth {
+//    TODO: Connect to Firebase API to get user information and Basiq's API to manage users fincance
+//    TODO: Use cloud functions to obscure the API key, pass firebase auth state to the function to ensure the user is authenticated
+    
     internal class UserDetails : NSObject, UserType {
-        init (firebase_auth: Any? = nil, basiq_token: String? = nil, preview: Bool = false) {
+        init (firebase_auth: Any? = nil, preview: Bool = false) {
             
             //        Change this just to if preview once stubs have been removed
             self.email = "example@example.com"
