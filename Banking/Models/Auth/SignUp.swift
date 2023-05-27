@@ -18,7 +18,7 @@ extension Auth {
         var available_auth_methods: [AuthSignInMethods] = [.password]
         
 //        Create firebase user
-        try createFirebaseUser(username: username, password: password, name: name)
+//        try createFirebaseUser(username: username, password: password, name: name)
         
 //        If successful then add keychain and user defaults
         
@@ -32,11 +32,11 @@ extension Auth {
         if biometrics == .biometrics {
             available_auth_methods.append(.biometric)
         }
-        
+                
 //        Writing username and password to keychain for use with
 //        local authentication methods (pin, biometrics)
         try self.manageKeychain(.create, attr_account: username, value_data: password.data(using: .utf8)!, attr_type: .password)
-        
+                
         if self.preview {
             try Auth.add_available_sign_in_methods(available_auth_methods)
             self.current = UserDetails(preview: true)
@@ -62,9 +62,12 @@ extension Auth {
                 return
             }
             guard authResult == nil else {
+                print(authResult as Any)
+                
                 firebase_err = AuthError.generic
                 return
             }
+            print("success")
         }
 
         if firebase_err != nil {

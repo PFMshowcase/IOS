@@ -24,7 +24,7 @@ struct CreateFlowView: View {
     func userPassComplete () {
         screen = "info"
     }
-    
+
     func pinBioComplete () {
         do {
             try auth!.createUser(username: username, password: password, name: name, pin: pin, biometrics: .biometrics)
@@ -33,7 +33,7 @@ struct CreateFlowView: View {
             print(err)
         }
     }
-    
+
     func infoComplete () {
         screen = "alternatives"
     }

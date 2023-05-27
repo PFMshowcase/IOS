@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SigningView: View {
     @State var method: AuthMethods
+    @State var test: String = ""
     var auth: Auth
     
     init (_ auth_obj: Auth) {

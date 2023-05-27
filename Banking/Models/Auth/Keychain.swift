@@ -33,25 +33,31 @@ extension Auth {
      - Throws: `KeychainError` if SecItemAdd or SecItemUpdate don't return SecSuccess
      */
     func manageKeychain (_ method: KeychainMethods.write, attr_account: String, value_data: Data, attr_type: KeychainTypes) throws {
-        query[kSecAttrAccount] = attr_account
-        query[kSecAttrType] = attr_type.value
+        query[kSecAttrAccount as String] = attr_account
+        query[kSecAttrType as String] = attr_type.rawValue
         
         if method == .create {
-            query[kSecValueData] = value_data
+            query[kSecValueData as String] = value_data
             
+            print("attempting to create")
+            print(query)
             let saveStatus = SecItemAdd(query as CFDictionary, nil)
                         
             if saveStatus == errSecDuplicateItem {
                 try manageKeychain(.update, attr_account: attr_account, value_data: value_data, attr_type: attr_type)
             } else if saveStatus != errSecSuccess {
+                print(SecCopyErrorMessageString(saveStatus, nil) as Any)
+//                TODO: Give more insightful error code
                 throw KeychainError.operation
             }
         } else if method == .update {
-            let updatedData = [kSecValueData: value_data]
+            let updatedData = [kSecValueData as String: value_data]
             
             let updateStatus = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
                     
             if updateStatus != errSecSuccess {
+                print(SecCopyErrorMessageString(updateStatus, nil) as Any)
+//                TODO: Give more insightful error code
                 throw KeychainError.operation
             }
         }
@@ -72,14 +78,14 @@ extension Auth {
      - Returns: Tuple with the username and then the password/pin of the account
      */
     func manageKeychain (_ method: KeychainMethods.read, attr_type: KeychainTypes, attr_account: String? = nil, value_data: Data? = nil) throws -> (String, String) {
-        query[kSecMatchLimit] = kSecMatchLimitOne
-        query[kSecReturnAttributes] = true
-        query[kSecReturnData] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+        query[kSecReturnAttributes as String] = true
+        query[kSecReturnData as String] = true
         
         if attr_account != nil {
-            query[kSecAttrAccount] = attr_account
+            query[kSecAttrAccount as String] = attr_account
         } else if value_data != nil {
-            query[kSecValueRef] = value_data
+            query[kSecValueRef as String] = value_data
         } else {
             throw KeychainError.accountOrDataNeeded
         }
@@ -97,6 +103,7 @@ extension Auth {
                 throw KeychainError.valuesNotCorrect
             }
         } else {
+//                TODO: Give more insightful error code
             throw KeychainError.operation
         }
     }
@@ -116,12 +123,14 @@ extension Auth {
      - Returns: Void
      */
     func manageKeychain (_ method: KeychainMethods.delete, attr_type: KeychainTypes, attr_account: String) throws {
-        query[kSecAttrAccount] = attr_account
-        query[kSecAttrType] = attr_type
+        query[kSecAttrAccount as String] = attr_account
+        query[kSecAttrType as String] = attr_type
         
         let res = SecItemDelete(query as CFDictionary)
         
         if res != errSecSuccess {
+            print(SecCopyErrorMessageString(res, nil) as Any)
+//                TODO: Give more insightful error code
             throw KeychainError.operation
         }
     }

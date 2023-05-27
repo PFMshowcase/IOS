@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseCore
+//import FirebaseCore
 
 /* =====================================================
  
@@ -28,9 +28,9 @@ class Auth: NSObject, ObservableObject {
     internal var preview: Bool = false
     
 //    Internal query for keychain methods
-    internal var query: [CFString: Any] = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrService: "PFM"
+    internal var query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrService as String: "PFM"
     ]
     
     private init (basiq_api_key: String) {
