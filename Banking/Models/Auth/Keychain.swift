@@ -32,19 +32,17 @@ extension Auth {
      
      - Throws: `KeychainError` if SecItemAdd or SecItemUpdate don't return SecSuccess
      */
-    func manageKeychain (_ method: KeychainMethods.write, attr_account: String, value_data: Data, attr_type: KeychainTypes) throws {
+    func manageKeychain (_ method: KeychainMethods.write, attr_account: String, value_data: Data, attr_service: KeychainTypes) throws {
         query[kSecAttrAccount as String] = attr_account
-        query[kSecAttrType as String] = attr_type.rawValue
+        query[kSecAttrService as String] = attr_service.rawValue
         
         if method == .create {
             query[kSecValueData as String] = value_data
-            
-            print("attempting to create")
-            print(query)
             let saveStatus = SecItemAdd(query as CFDictionary, nil)
                         
             if saveStatus == errSecDuplicateItem {
-                try manageKeychain(.update, attr_account: attr_account, value_data: value_data, attr_type: attr_type)
+                print("Duplicate create action")
+                try manageKeychain(.update, attr_account: attr_account, value_data: value_data, attr_service: attr_service)
             } else if saveStatus != errSecSuccess {
                 print(SecCopyErrorMessageString(saveStatus, nil) as Any)
 //                TODO: Give more insightful error code
@@ -66,21 +64,22 @@ extension Auth {
     /**
      Method for reading keychain values
      
-     This method takes either the account or the data value and searches keychain for the other. Ensure to specify
+     This method takes *either* the account or the data value and searches keychain for the other. Ensure to specify
      whether to return a pin or username and password
      
      - Parameter method: Default parameter specifying whether to read or call a different function
      - Parameter attr_type: The type of value stored, ie: pin or password
      - Parameter attr_account: The provided username for the account to sign in
      
-     - Throws: KeychainError if data is inputted correctly or operation fails
+     - Throws: `KeychainError` if data is inputted correctly or operation fails
      
      - Returns: Tuple with the username and then the password/pin of the account
      */
-    func manageKeychain (_ method: KeychainMethods.read, attr_type: KeychainTypes, attr_account: String? = nil, value_data: Data? = nil) throws -> (String, String) {
+    func manageKeychain (_ method: KeychainMethods.read, attr_account: String? = nil, value_data: Data? = nil, attr_service: KeychainTypes) throws -> (String, String) {
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnAttributes as String] = true
         query[kSecReturnData as String] = true
+        query[kSecAttrService as String] = attr_service
         
         if attr_account != nil {
             query[kSecAttrAccount as String] = attr_account
@@ -118,13 +117,13 @@ extension Auth {
      - Parameter attr_type: The type of value stored, ie: pin or password
      - Parameter attr_account: The provided username for the account to sign in
      
-     - Throws: KeychainError if operation fails
+     - Throws: `KeychainError` if operation fails
      
      - Returns: Void
      */
-    func manageKeychain (_ method: KeychainMethods.delete, attr_type: KeychainTypes, attr_account: String) throws {
+    func manageKeychain (_ method: KeychainMethods.delete, attr_account: String, attr_service: KeychainTypes) throws {
         query[kSecAttrAccount as String] = attr_account
-        query[kSecAttrType as String] = attr_type
+        query[kSecAttrService as String] = attr_service
         
         let res = SecItemDelete(query as CFDictionary)
         

@@ -24,7 +24,7 @@ extension Auth {
         
 //        If pin has been created then add that method of auth
         if pin != nil {
-            try self.manageKeychain(.create, attr_account: username, value_data: pin!.data(using: .utf8)!, attr_type: .pin)
+            try self.manageKeychain(.create, attr_account: username, value_data: pin!.data(using: .utf8)!, attr_service: .pin)
             available_auth_methods.append(.pin)
         }
         
@@ -35,7 +35,7 @@ extension Auth {
                 
 //        Writing username and password to keychain for use with
 //        local authentication methods (pin, biometrics)
-        try self.manageKeychain(.create, attr_account: username, value_data: password.data(using: .utf8)!, attr_type: .password)
+        try self.manageKeychain(.create, attr_account: username, value_data: password.data(using: .utf8)!, attr_service: .password)
                 
         if self.preview {
             try Auth.add_available_sign_in_methods(available_auth_methods)

@@ -88,27 +88,9 @@ struct KeychainMethods {
     }
 }
 
-
-class KeychainTypes {
-    static let password = try! KeychainTypes(.password)
-    static let pin = try! KeychainTypes(.pin)
-    
-    var int_value: Int
-    var str_value: String
-    
-    init (_ str_type: StrTypes) throws {
-        switch str_type {
-        case .password: self.int_value = 0
-        case .pin: self.int_value = 1
-        }
-        
-        self.str_value = str_type.rawValue
-    }
-    
-    enum StrTypes: String {
-        case password = "password"
-        case pin = "pin"
-    }
+enum KeychainTypes: String {
+    case password = "password"
+    case pin = "pin"
 }
 
 enum KeychainError: Error {

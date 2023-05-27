@@ -29,8 +29,7 @@ class Auth: NSObject, ObservableObject {
     
 //    Internal query for keychain methods
     internal var query: [String: Any] = [
-        kSecClass as String: kSecClassGenericPassword,
-        kSecAttrService as String: "PFM"
+        kSecClass as String: kSecClassGenericPassword
     ]
     
     private init (basiq_api_key: String) {
@@ -40,8 +39,6 @@ class Auth: NSObject, ObservableObject {
         } else {
     //        Get a basiq_token
             self.basiq_token = "token from api key"
-            
-            
         }
     }
 }

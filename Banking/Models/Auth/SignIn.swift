@@ -43,13 +43,13 @@ extension Auth {
 //    values from keychain
     func signIn (pin: String) throws -> Void {
         let encoded_pin = pin.data(using: .utf8)!
-        let (defined_acc, defined_pin) = try manageKeychain(.read, attr_type: .pin, value_data: encoded_pin)
+        let (defined_acc, defined_pin) = try manageKeychain(.read, value_data: encoded_pin, attr_service: .pin)
         
         guard pin == defined_pin else {
             throw AuthError.incorrectPin
         }
         
-        let (username, pswrd) = try manageKeychain(.read, attr_type: .password, attr_account: defined_acc)
+        let (username, pswrd) = try manageKeychain(.read, attr_account: defined_acc, attr_service: .password)
         
         try self.signIn(username: username, password: pswrd)
     }
@@ -75,7 +75,7 @@ extension Auth {
                             return
                         }
                         
-                        guard let (username, pswrd) = try? self.manageKeychain(.read, attr_type: .password, attr_account: last_user_logged_in) else {
+                        guard let (username, pswrd) = try? self.manageKeychain(.read, attr_account: last_user_logged_in, attr_service: .password) else {
                             error = AuthError.generic
                             return
                         }
