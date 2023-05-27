@@ -7,6 +7,7 @@
 
 import Foundation
 import LocalAuthentication
+import FirebaseAuth
 
 
 /* =====================================================
@@ -19,6 +20,8 @@ extension Auth {
 //    Base sign in func, takes username and password and signs into
 //    Firebase and retrieves the basiq user id
     func signIn (username: String, password: String) throws -> Void {
+        var fir_user: FirebaseAuth.User?
+        var fir_err: Error?
         guard self.current == nil else {
             throw AuthError.alreadySignedIn
         }
@@ -29,11 +32,19 @@ extension Auth {
         
 //        TODO: Connect to API's to grab needed data
 //        Sign into GCP identity, will return an auth object which we can pass to UserDetails
+//        Then grab users db data
 //        Information needed:
 //            - email: String
 //            - display_name: String
 //            - basiq_user_id: String
 //            - firebase_user_id: String
+        FirebaseAuth.Auth.auth().signIn(withEmail: username, password: password) { authResult, error in
+            fir_user = authResult?.user
+            fir_err = error
+        }
+                
+        if fir_err != nil { throw fir_err! }
+        
         print("username: "+username + " - password: " + password)
         current = UserDetails()
         Auth.set_last_user(username)

@@ -44,7 +44,8 @@ struct SignInFlow: View {
         func sign_in_with_pin () {
             do {
                 try auth.signIn(pin: input_pin)
-            } catch {
+            } catch let err {
+                print(err)
 //                TODO: Handle incorrect pin (5 attempts before reverting to email and pass)
                 print("error signing in with pin")
             }

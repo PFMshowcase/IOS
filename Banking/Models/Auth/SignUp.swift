@@ -11,16 +11,30 @@ import FirebaseAuth
 
 
 extension Auth {
+//    TODO: If user creation fails after firebase user has been made, delete firebase user as well as any created data
     func createUser (username: String, password: String, name: UsersName, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) throws -> Void {
         guard self.current == nil else {
             throw AuthError.alreadySignedIn
         }
-        var available_auth_methods: [AuthSignInMethods] = [.password]
-        
-//        Create firebase user
-//        try createFirebaseUser(username: username, password: password, name: name)
         
 //        If successful then add keychain and user defaults
+        let available_auth_methods = try create_local_sign_in(username: username, password: password, pin: pin, biometrics: biometrics)
+                
+        if self.preview {
+            try Auth.add_available_sign_in_methods(available_auth_methods)
+            self.current = UserDetails(preview: true)
+            return
+        }
+        
+//        Create firebase user
+        try create_firebase_user(username: username, password: password)
+        
+        try Auth.add_available_sign_in_methods(available_auth_methods)
+        self.current = UserDetails()
+    }
+    
+    private func create_local_sign_in (username: String, password: String, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) throws -> [AuthSignInMethods] {
+        var available_auth_methods: [AuthSignInMethods] = [.password]
         
 //        If pin has been created then add that method of auth
         if pin != nil {
@@ -36,35 +50,16 @@ extension Auth {
 //        Writing username and password to keychain for use with
 //        local authentication methods (pin, biometrics)
         try self.manageKeychain(.create, attr_account: username, value_data: password.data(using: .utf8)!, attr_service: .password)
-                
-        if self.preview {
-            try Auth.add_available_sign_in_methods(available_auth_methods)
-            self.current = UserDetails(preview: true)
-            return
-        }
         
-        try Auth.add_available_sign_in_methods(available_auth_methods)
-        self.current = UserDetails()
+        return available_auth_methods
     }
     
-    private func createFirebaseUser (username: String, password: String, name: UsersName) throws {
-//        1. Create user with Firebase Auth create user
-//        3. Create Basiq user through Firebase cloud functions (callable)
-//        4. Same cloud functions should create a
-//           Firebase Firestore entry with user id containing basiq userId, name
-//           and any other data and then return the basiq userid
-//
+    private func create_firebase_user (username: String, password: String) throws {
         var firebase_err: Error?
 
         FirebaseAuth.Auth.auth().createUser(withEmail: username, password: password) { authResult, error in
             guard error == nil else {
                 firebase_err = error
-                return
-            }
-            guard authResult == nil else {
-                print(authResult as Any)
-                
-                firebase_err = AuthError.generic
                 return
             }
             print("success")

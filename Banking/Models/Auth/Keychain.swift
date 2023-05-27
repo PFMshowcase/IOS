@@ -33,32 +33,22 @@ extension Auth {
      - Throws: `KeychainError` if SecItemAdd or SecItemUpdate don't return SecSuccess
      */
     func manageKeychain (_ method: KeychainMethods.write, attr_account: String, value_data: Data, attr_service: KeychainTypes) throws {
+        var res: OSStatus = errSecUnimplemented
+        
         query[kSecAttrAccount as String] = attr_account
         query[kSecAttrService as String] = attr_service.rawValue
         
         if method == .create {
             query[kSecValueData as String] = value_data
-            let saveStatus = SecItemAdd(query as CFDictionary, nil)
-                        
-            if saveStatus == errSecDuplicateItem {
-                print("Duplicate create action")
-                try manageKeychain(.update, attr_account: attr_account, value_data: value_data, attr_service: attr_service)
-            } else if saveStatus != errSecSuccess {
-                print(SecCopyErrorMessageString(saveStatus, nil) as Any)
-//                TODO: Give more insightful error code
-                throw KeychainError.operation
-            }
+            
+            res = SecItemAdd(query as CFDictionary, nil)
         } else if method == .update {
             let updatedData = [kSecValueData as String: value_data]
             
-            let updateStatus = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
-                    
-            if updateStatus != errSecSuccess {
-                print(SecCopyErrorMessageString(updateStatus, nil) as Any)
-//                TODO: Give more insightful error code
-                throw KeychainError.operation
-            }
+            let res = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
         }
+        
+        guard res == errSecSuccess else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String) }
     }
     
     /**
@@ -76,35 +66,34 @@ extension Auth {
      - Returns: Tuple with the username and then the password/pin of the account
      */
     func manageKeychain (_ method: KeychainMethods.read, attr_account: String? = nil, value_data: Data? = nil, attr_service: KeychainTypes) throws -> (String, String) {
+        guard attr_account != nil || value_data != nil else { throw KeychainError.accountOrDataNeeded }
+        
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnAttributes as String] = true
         query[kSecReturnData as String] = true
-        query[kSecAttrService as String] = attr_service
+        query[kSecAttrService as String] = attr_service.rawValue
         
         if attr_account != nil {
             query[kSecAttrAccount as String] = attr_account
         } else if value_data != nil {
-            query[kSecValueRef as String] = value_data
-        } else {
-            throw KeychainError.accountOrDataNeeded
+            query[kSecValueData as String] = value_data
         }
         
         var item: CFTypeRef?
+                
+        let res = SecItemCopyMatching(query as CFDictionary, &item)
         
-        if SecItemCopyMatching(query as CFDictionary, &item) == noErr {
-            if let existingItem = item as? [String: Any],
-               let username = existingItem[kSecAttrAccount as String] as? String,
-               let passwordData = existingItem[kSecValueData as String] as? Data,
-               let password = String(data: passwordData, encoding: .utf8)
-            {
-                return (username, password)
-            } else {
-                throw KeychainError.valuesNotCorrect
-            }
-        } else {
-//                TODO: Give more insightful error code
-            throw KeychainError.operation
+        guard res == noErr else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String) }
+        
+        guard let existingItem = item as? [String: Any],
+              let account = existingItem[kSecAttrAccount as String] as? String,
+              let passwordData = existingItem[kSecValueData as String] as? Data,
+              let password = String(data: passwordData, encoding: .utf8)
+        else {
+            throw KeychainError.unexpectedValues
         }
+        
+        return (account, password)
     }
     
     /**
@@ -127,10 +116,6 @@ extension Auth {
         
         let res = SecItemDelete(query as CFDictionary)
         
-        if res != errSecSuccess {
-            print(SecCopyErrorMessageString(res, nil) as Any)
-//                TODO: Give more insightful error code
-            throw KeychainError.operation
-        }
+        guard res == errSecSuccess else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String)}
     }
 }

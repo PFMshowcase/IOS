@@ -94,8 +94,8 @@ enum KeychainTypes: String {
 }
 
 enum KeychainError: Error {
-    case operation
-    case valuesNotCorrect
+    case unhandled(String)
+    case unexpectedValues
     case uuidNeededToUpdate
     case accountOrDataNeeded
 }
