@@ -34,15 +34,33 @@ enum AuthBiometricFlag {
     case noBiometrics
 }
 
-enum AuthSignInMethods {
-    case biometric
-    case password
-    case pin
+struct AuthSignInMethods: Codable, Equatable {
+    static let biometric = AuthSignInMethods("biometric")
+    static let password = AuthSignInMethods("password")
+    static let pin = AuthSignInMethods("pin")
+    
+    var value: String
+    
+    init (_ type: String) {
+        value = type
+    }
+}
+
+@objc class UsersName: NSObject, ObservableObject {
+    @Published var fName: String
+    @Published var lName: String
+    @Published var display: String?
+    
+    init(fName: String, lName: String, display: String? = nil) {
+        self.fName = fName
+        self.lName = lName
+        self.display = display
+    }
 }
 
 @objc protocol UserType {
     var email: String { get }
-    var name: String { get }
+    var name: UsersName { get }
     var uid: String { get }
     var totalBalance: Double { get }
     var accounts: [Account] { get }
@@ -70,7 +88,20 @@ struct KeychainMethods {
     }
 }
 
+struct KeychainTypes {
+    static let password = KeychainTypes("password")
+    static let pin = KeychainTypes("pin")
+    
+    var value: String
+    
+    init (_ type: String) {
+        value = type
+    }
+}
+
 enum KeychainError: Error {
     case operation
     case valuesNotCorrect
+    case uuidNeededToUpdate
+    case accountOrDataNeeded
 }

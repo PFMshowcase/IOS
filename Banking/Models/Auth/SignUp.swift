@@ -11,15 +11,20 @@ import FirebaseAuth
 
 
 extension Auth {
-    func createUser (username: String, password: String, name: String, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) throws -> Void {
+    func createUser (username: String, password: String, name: UsersName, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) throws -> Void {
         guard self.current == nil else {
             throw AuthError.alreadySignedIn
         }
         var available_auth_methods: [AuthSignInMethods] = [.password]
         
+//        Create firebase user
+        try createFirebaseUser(username: username, password: password, name: name)
+        
+//        If successful then add keychain and user defaults
+        
 //        If pin has been created then add that method of auth
         if pin != nil {
-            try writePinKeychain(pin: pin!)
+            try self.manageKeychain(.create, attr_account: username, value_data: pin!.data(using: .utf8)!, attr_type: .pin)
             available_auth_methods.append(.pin)
         }
         
@@ -30,18 +35,27 @@ extension Auth {
         
 //        Writing username and password to keychain for use with
 //        local authentication methods (pin, biometrics)
-        try writeUserPassKeychain(username: username, password: password)
+        try self.manageKeychain(.create, attr_account: username, value_data: password.data(using: .utf8)!, attr_type: .password)
         
         if self.preview {
-            Auth.create_available_sign_in_method(available_auth_methods)
+            try Auth.add_available_sign_in_methods(available_auth_methods)
             self.current = UserDetails(preview: true)
             return
         }
         
-
-//        Create user using cloud blocking function, adding their displayName and basiq uuid, this function will create a Basiq user with a server token
+        try Auth.add_available_sign_in_methods(available_auth_methods)
+        self.current = UserDetails()
+    }
+    
+    private func createFirebaseUser (username: String, password: String, name: UsersName) throws {
+//        1. Create user with Firebase Auth create user
+//        3. Create Basiq user through Firebase cloud functions (callable)
+//        4. Same cloud functions should create a
+//           Firebase Firestore entry with user id containing basiq userId, name
+//           and any other data and then return the basiq userid
+//
         var firebase_err: Error?
-        
+
         FirebaseAuth.Auth.auth().createUser(withEmail: username, password: password) { authResult, error in
             guard error == nil else {
                 firebase_err = error
@@ -52,24 +66,10 @@ extension Auth {
                 return
             }
         }
-        
+
         if firebase_err != nil {
             throw firebase_err!
         }
-        
-        let add_details = FirebaseAuth.Auth.auth().currentUser?.createProfileChangeRequest()
-        
-        add_details?.displayName = name
-        add_details?.commitChanges(completion: {(error) in
-            if let error = error {
-//                TODO: Throw error so that the view can try a new
-//                displayname - this part is required for basiq
-                print(error.localizedDescription)
-            }
-        })
-        
-        Auth.create_available_sign_in_method(available_auth_methods)
-        self.current = UserDetails()
     }
     
     func enableBiometrics () -> Bool {

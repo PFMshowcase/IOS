@@ -11,6 +11,11 @@ import SwiftUI
 struct SignInFlow: View {
     let preferred_auth = Auth.get_available_sign_in_method()
     let auth: Auth
+    
+    init (_ auth:Auth) {
+        self.auth = auth
+    }
+    
     @State var input_pin: String = ""
     @State var email: String = ""
     @State var password: String = ""
@@ -18,8 +23,10 @@ struct SignInFlow: View {
     private func userPass () -> some View {
         func sign_in_with_email_pass () {
             do {
-                try auth.signIn(username: email, password: password)
-            } catch {
+                try auth.createUser(username: "test", password: "1234", name: UsersName(fName: "first", lName: "last"))
+//                try auth.signIn(username: email, password: password)
+            } catch let err{
+                print(err)
 //                TODO: Handle incorrect email and password (10 attempts before time out?)
                 print("error signing in with email and password")
             }

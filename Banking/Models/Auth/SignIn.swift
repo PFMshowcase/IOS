@@ -36,18 +36,20 @@ extension Auth {
 //            - firebase_user_id: String
         print("username: "+username + " - password: " + password)
         current = UserDetails()
+        Auth.set_last_user(username)
     }
     
 //    Sign in func to enable signing in with a pin and grabbing the
 //    values from keychain
     func signIn (pin: String) throws -> Void {
-        let defined_pin = try getPinKeychain()
+        let encoded_pin = pin.data(using: .utf8)!
+        let (defined_acc, defined_pin) = try manageKeychain(.read, attr_type: .pin, value_data: encoded_pin)
         
         guard pin == defined_pin else {
             throw AuthError.incorrectPin
         }
         
-        let (username, pswrd) = try getUserPassKeychain()
+        let (username, pswrd) = try manageKeychain(.read, attr_type: .password, attr_account: defined_acc)
         
         try self.signIn(username: username, password: pswrd)
     }
@@ -68,7 +70,12 @@ extension Auth {
                 DispatchQueue.main.async {
                     if success {
 //                    TODO: Figure out how to propogate errors here instead of asigning an arbitrary error
-                        guard let (username, pswrd) = try? self.getUserPassKeychain() else {
+                        guard let last_user_logged_in = Auth.get_last_user() else {
+                            error = AuthError.generic
+                            return
+                        }
+                        
+                        guard let (username, pswrd) = try? self.manageKeychain(.read, attr_type: .password, attr_account: last_user_logged_in) else {
                             error = AuthError.generic
                             return
                         }

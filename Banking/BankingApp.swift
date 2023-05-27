@@ -9,13 +9,13 @@ import SwiftUI
 import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseFunctions
 
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        //        Initialize firebase
+//        Initialize firebase
         FirebaseApp.configure()
-        
         do {
             try Auth.initialize(basiq_api_key: "")
             return true
@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+//var functions = Functions.functions(region: "australia-southeast1")
 
 @main
 struct BankingApp: App {

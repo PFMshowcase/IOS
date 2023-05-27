@@ -19,7 +19,7 @@ struct Home: View {
             VStack (spacing:30) {
                 VStack (spacing:30) {
                     HStack {
-                        Text("Hello, "+user.name).font(.h1)
+                        Text("Hello, " + user.name.fName).font(.h1)
                     }
                     .hAlignment()
                     

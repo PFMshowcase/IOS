@@ -37,8 +37,8 @@ struct SigningView: View {
                 .font(.largeTitle)
                 .hAlignment(.center)
             switch method {
-            case .create:Text("Create account")
-            case .logIn:SignInFlow(auth: auth)
+            case .create:CreateFlowView(auth)
+            case .logIn:SignInFlow(auth)
             }
             HStack {
                 Button(action: swapMethod) {

@@ -8,8 +8,6 @@
 import Foundation
 import AuthenticationServices
 
-// TODO: Refactor this; too long
-
 /* =====================================================
  
     Auth extension creating CRUD access to device
@@ -17,43 +15,78 @@ import AuthenticationServices
  
    ===================================================== */
 
-extension Auth {    
-//    Private func for retrieving stored keychain username/password
-    private func manageKeychain (_ method: KeychainMethods.write, account: String, data: Data, attr_label: String) throws {
-        query[kSecAttrAccount] = account
-        query[kSecAttrLabel] = attr_label
+extension Auth {
+    /**
+     Method for creating and updating data on the keychain
+     
+     To enable biometrics and pin numbers, this method will create a keychain entry which stores the users
+     preferred username, password and pin. This will enable the app to retrieve the users username and password
+     when logging into the app.
+    
+     - Parameter method: Default parameter specifying whether to create or update or call a different function
+     - Parameter attr_account: The username connected to the account
+     - Parameter attr_type: the type of the data stored (password/pin)
+     - Parameter value_data: the password/pin connected to the account
+     
+     - Returns: Void
+     
+     - Throws: `KeychainError` if SecItemAdd or SecItemUpdate don't return SecSuccess
+     */
+    func manageKeychain (_ method: KeychainMethods.write, attr_account: String, value_data: Data, attr_type: KeychainTypes) throws {
+        query[kSecAttrAccount] = attr_account
+        query[kSecAttrType] = attr_type.value
         
         if method == .create {
-            query[kSecValueData] = data
+            query[kSecValueData] = value_data
             
             let saveStatus = SecItemAdd(query as CFDictionary, nil)
-            
+                        
             if saveStatus == errSecDuplicateItem {
-                try manageKeychain(.update, account: account, data: data, attr_label: attr_label)
+                try manageKeychain(.update, attr_account: attr_account, value_data: value_data, attr_type: attr_type)
             } else if saveStatus != errSecSuccess {
                 throw KeychainError.operation
             }
         } else if method == .update {
-            let updatedData = [kSecValueData: data]
+            let updatedData = [kSecValueData: value_data]
             
             let updateStatus = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
-            
+                    
             if updateStatus != errSecSuccess {
                 throw KeychainError.operation
             }
         }
     }
     
-    private func manageKeychain (_ method: KeychainMethods.read, attr_label: String) throws -> (String, String) {
+    /**
+     Method for reading keychain values
+     
+     This method takes either the account or the data value and searches keychain for the other. Ensure to specify
+     whether to return a pin or username and password
+     
+     - Parameter method: Default parameter specifying whether to read or call a different function
+     - Parameter attr_type: The type of value stored, ie: pin or password
+     - Parameter attr_account: The provided username for the account to sign in
+     
+     - Throws: KeychainError if data is inputted correctly or operation fails
+     
+     - Returns: Tuple with the username and then the password/pin of the account
+     */
+    func manageKeychain (_ method: KeychainMethods.read, attr_type: KeychainTypes, attr_account: String? = nil, value_data: Data? = nil) throws -> (String, String) {
         query[kSecMatchLimit] = kSecMatchLimitOne
-        query[kSecAttrLabel] = attr_label
         query[kSecReturnAttributes] = true
         query[kSecReturnData] = true
+        
+        if attr_account != nil {
+            query[kSecAttrAccount] = attr_account
+        } else if value_data != nil {
+            query[kSecValueRef] = value_data
+        } else {
+            throw KeychainError.accountOrDataNeeded
+        }
         
         var item: CFTypeRef?
         
         if SecItemCopyMatching(query as CFDictionary, &item) == noErr {
-            
             if let existingItem = item as? [String: Any],
                let username = existingItem[kSecAttrAccount as String] as? String,
                let passwordData = existingItem[kSecValueData as String] as? Data,
@@ -68,73 +101,28 @@ extension Auth {
         }
     }
     
-    private func manageKeychain (_ method: KeychainMethods.delete, attr_label: String) throws {
-        query[kSecAttrLabel] = attr_label
+    /**
+     Method for deleting keychain values
+     
+     This method takes either the account or the data value and searches keychain for the other. Ensure to specify
+     whether to return a pin or username and password
+     
+     - Parameter method: Default parameter specifying whether to delete or call a different function
+     - Parameter attr_type: The type of value stored, ie: pin or password
+     - Parameter attr_account: The provided username for the account to sign in
+     
+     - Throws: KeychainError if operation fails
+     
+     - Returns: Void
+     */
+    func manageKeychain (_ method: KeychainMethods.delete, attr_type: KeychainTypes, attr_account: String) throws {
+        query[kSecAttrAccount] = attr_account
+        query[kSecAttrType] = attr_type
         
         let res = SecItemDelete(query as CFDictionary)
         
         if res != errSecSuccess {
             throw KeychainError.operation
         }
-    }
-}
-
-/* =====================================================
- 
-    Auth extension with keychain wrappers to access for
-    username and password
- 
-   ===================================================== */
-
-extension Auth {
-    internal func getUserPassKeychain () throws -> (username: String, password: String) {
-        let res = try manageKeychain(.read, attr_label: "password")
-        return res
-    }
-    
-    internal func writeUserPassKeychain (username: String, password: String) throws {
-        let data = password.data(using: .utf8)!
-        
-        try manageKeychain(.create, account: username, data: data, attr_label: "password")
-    }
-    
-    internal func updateUserPassKeychain (username: String, password: String) throws {
-        let data = password.data(using: .utf8)!
-        
-        try manageKeychain(.update, account: username, data: data, attr_label: "password")
-    }
-    
-    internal func deleteUserPassKeychain () throws {
-        try manageKeychain(.delete, attr_label: "password")
-    }
-}
-
-/* =====================================================
- 
-    Auth extension with keychain wrappers to access for
-    pin code
- 
-   ===================================================== */
-
-extension Auth {
-    internal func getPinKeychain () throws -> String {
-        let (_, pin) = try manageKeychain(.read, attr_label: "pin")
-        return pin
-    }
-    
-    internal func writePinKeychain (pin: String) throws {
-        let data = pin.data(using: .utf8)!
-        
-        try manageKeychain(.create, account: "pin", data: data, attr_label: "pin")
-    }
-    
-    internal func updatePinKeychain (pin: String) throws {
-        let data = pin.data(using: .utf8)!
-        
-        try manageKeychain(.update, account: "pin", data: data, attr_label: "pin")
-    }
-    
-    internal func deletePinKeychain () throws {
-        try manageKeychain(.delete, attr_label: "pin")
     }
 }
