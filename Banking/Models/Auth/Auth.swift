@@ -24,8 +24,9 @@ class Auth: NSObject, ObservableObject {
     private var observation: NSKeyValueObservation?
     
 //    Internal vars
-    internal var basiq_token: String
-    internal var preview: Bool = false
+    internal var basiq_token: String?
+    internal var basiq_api_key: String
+    internal var preview: Bool
     
 //    Internal query for keychain methods
     internal var query: [String: Any] = [
@@ -33,13 +34,9 @@ class Auth: NSObject, ObservableObject {
     ]
     
     private init (basiq_api_key: String) {
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            self.preview = true
-            self.basiq_token = ""
-        } else {
-    //        Get a basiq_token
-            self.basiq_token = "token from api key"
-        }
+        self.basiq_api_key = basiq_api_key
+        
+        self.preview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
 
