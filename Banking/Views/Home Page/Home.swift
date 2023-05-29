@@ -12,6 +12,10 @@ struct Home: View {
     
     init(_ user: UserType) {
         self.user = user
+        
+        functions.httpsCallable("createuser").call(["name": "test"]) { result, err in
+            print("called")
+        }
     }
     
     var body: some View {

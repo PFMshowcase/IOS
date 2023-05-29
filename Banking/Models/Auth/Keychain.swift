@@ -45,7 +45,7 @@ extension Auth {
         } else if method == .update {
             let updatedData = [kSecValueData as String: value_data]
             
-            let res = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
+            res = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
         }
         
         guard res == errSecSuccess else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String) }
