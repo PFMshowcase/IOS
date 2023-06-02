@@ -8,6 +8,7 @@
 import Foundation
 import LocalAuthentication
 import FirebaseAuth
+import FirebaseFirestore
 
 
 extension Auth {
@@ -26,11 +27,12 @@ extension Auth {
             return
         }
         
-//        Create firebase user
-        try create_firebase_user(username: username, password: password)
+//        Create Firebase and Basiq user
+        let basiq_user = try create_fir_basiq_user(username: username, password: password, name: name)
         
         try Auth.add_available_sign_in_methods(available_auth_methods)
-        self.current = UserDetails()
+        self.current = UserDetails(basiq_user: basiq_user)
+        Auth.set_last_user(username)
     }
     
     private func create_local_sign_in (username: String, password: String, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) throws -> [AuthSignInMethods] {
@@ -54,20 +56,33 @@ extension Auth {
         return available_auth_methods
     }
     
-    private func create_firebase_user (username: String, password: String) throws {
+    private func create_fir_basiq_user (username: String, password: String, name: UsersName) throws -> AuthBasiqUser {
         var firebase_err: Error?
-
+        
         FirebaseAuth.Auth.auth().createUser(withEmail: username, password: password) { authResult, error in
-            guard error == nil else {
-                firebase_err = error
+            firebase_err = error
+        }
+        
+        guard firebase_err == nil else { throw firebase_err! }
+        var basiq_user: AuthBasiqUser?
+        
+        functions.httpsCallable("setupuser").call(["name": name, "email": username] as [String: Any]){ res, err in
+            guard err == nil else {
+                firebase_err = err! as NSError
                 return
             }
-            print("success")
-        }
+            
+            guard let resData = res?.data as? [String: Any],
+                  let resUser = AuthBasiqUser(dict: resData) else {
+                firebase_err = AuthError.generic
+                return
+            }
 
-        if firebase_err != nil {
-            throw firebase_err!
+            basiq_user = resUser
         }
+        
+        guard firebase_err == nil else { throw firebase_err! }
+        return basiq_user!
     }
     
     func enableBiometrics () -> Bool {

@@ -20,8 +20,8 @@ extension Auth {
 //    Base sign in func, takes username and password and signs into
 //    Firebase and retrieves the basiq user id
     func signIn (username: String, password: String) throws -> Void {
-        var fir_user: FirebaseAuth.User?
         var fir_err: Error?
+        var basiq_user: AuthBasiqUser?
         guard self.current == nil else {
             throw AuthError.alreadySignedIn
         }
@@ -30,23 +30,28 @@ extension Auth {
             current = UserDetails(preview: true)
         }
         
-//        TODO: Connect to API's to grab needed data
-//        Sign into GCP identity, will return an auth object which we can pass to UserDetails
-//        Then grab users db data
-//        Information needed:
-//            - email: String
-//            - display_name: String
-//            - basiq_user_id: String
-//            - firebase_user_id: String
         FirebaseAuth.Auth.auth().signIn(withEmail: username, password: password) { authResult, error in
-            fir_user = authResult?.user
             fir_err = error
         }
                 
         if fir_err != nil { throw fir_err! }
         
+        functions.httpsCallable("loginuser").call() { res, err in
+            guard err == nil else {
+                fir_err = err!
+                return
+            }
+            
+            guard let resData = res?.data as? [String: Any],
+                  let resUser = AuthBasiqUser(dict: resData) else {
+                fir_err = AuthError.generic
+                return
+            }
+            basiq_user = resUser
+        }
+        
         print("username: "+username + " - password: " + password)
-        current = UserDetails()
+        current = UserDetails(basiq_user: basiq_user!)
         Auth.set_last_user(username)
     }
     

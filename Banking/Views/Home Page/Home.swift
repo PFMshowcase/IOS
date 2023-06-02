@@ -17,11 +17,13 @@ struct Home: View {
     var body: some View {
         ScrollView {
             VStack (spacing:30) {
-                Button("test") {
-                    functions.httpsCallable("createuser").call(["name": "test"]) { result, err in
-                        print("called")
-                    }
-                }
+//                Button("test") {
+//                    functions.httpsCallable("setupuser").call(["name": "test"]) { result, err in
+//                        print("called")
+//                        print(err)
+//                        print(result?.data)
+//                    }
+//                }
                 VStack (spacing:30) {
                     HStack {
                         Text("Hello, " + user.name.fName).font(.h1)
