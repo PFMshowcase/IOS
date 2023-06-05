@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         functions.useEmulator(withHost: "localhost", port: 5001)
         do {
-            try Auth.initialize(basiq_api_key: "")
+            try Auth.setup()
             return true
         } catch {
             return false

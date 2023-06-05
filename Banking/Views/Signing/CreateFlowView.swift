@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct CreateFlowView: View {
-    var auth: Auth?
+    var auth: Auth
     @State var username: String = ""
     @State var password: String = ""
     @State var screen = ""
@@ -26,11 +26,15 @@ struct CreateFlowView: View {
     }
 
     func pinBioComplete () {
-        do {
-            try auth!.createUser(username: username, password: password, name: name, pin: pin, biometrics: .biometrics)
-        } catch let err {
-//            TODO: Maybe toast on error
-            print(err)
+        Task {
+            do {
+                try await auth.createUser(username: username, password: password, name: name, pin: pin, biometrics: .biometrics)
+            } catch let error as AuthError {
+                print(type(of: error))
+                print(error.kind, error.error, error.message as Any)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 

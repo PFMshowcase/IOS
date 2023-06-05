@@ -18,10 +18,18 @@ struct Home: View {
         ScrollView {
             VStack (spacing:30) {
 //                Button("test") {
-//                    functions.httpsCallable("setupuser").call(["name": "test"]) { result, err in
-//                        print("called")
-//                        print(err)
-//                        print(result?.data)
+//                    do{
+//                        let basiq = BasiqApi.api!
+//                        print(basiq.basiq_data.id)
+//                        print(basiq.basiq_data.token)
+//                        try basiq.req("users/\(basiq.basiq_data.id)", method: .get) { (data: Data?, err) in
+//                            print(err)
+//                            print("basiq request")
+//                            print(data)
+//                        }
+//                    }
+//                    catch {
+//                        print(error)
 //                    }
 //                }
                 VStack (spacing:30) {
@@ -35,7 +43,7 @@ struct Home: View {
                             .font(.small)
                             .foregroundColor(.text.medium)
                             .hAlignment()
-                        Text("$"+String(user.totalBalance))
+                        Text("$"+String(user.total_balance))
                             .font(.banner)
                             .hAlignment()
                     }

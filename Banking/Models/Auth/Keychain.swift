@@ -48,7 +48,7 @@ extension Auth {
             res = SecItemUpdate(query as CFDictionary, updatedData as CFDictionary)
         }
         
-        guard res == errSecSuccess else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String) }
+        guard res == errSecSuccess else { throw KeychainError.unhandled(message:SecCopyErrorMessageString(res, nil)! as String) }
     }
     
     /**
@@ -66,7 +66,7 @@ extension Auth {
      - Returns: Tuple with the username and then the password/pin of the account
      */
     func manageKeychain (_ method: KeychainMethods.read, attr_account: String? = nil, value_data: Data? = nil, attr_service: KeychainTypes) throws -> (String, String) {
-        guard attr_account != nil || value_data != nil else { throw KeychainError.accountOrDataNeeded }
+        guard attr_account != nil || value_data != nil else { throw KeychainError.accountOrDataNeeded() }
         
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnAttributes as String] = true
@@ -83,14 +83,14 @@ extension Auth {
                 
         let res = SecItemCopyMatching(query as CFDictionary, &item)
         
-        guard res == noErr else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String) }
+        guard res == noErr else { throw KeychainError.unhandled(message: SecCopyErrorMessageString(res, nil)! as String) }
         
         guard let existingItem = item as? [String: Any],
               let account = existingItem[kSecAttrAccount as String] as? String,
               let passwordData = existingItem[kSecValueData as String] as? Data,
               let password = String(data: passwordData, encoding: .utf8)
         else {
-            throw KeychainError.unexpectedValues
+            throw KeychainError.unexpectedValues()
         }
         
         return (account, password)
@@ -116,6 +116,6 @@ extension Auth {
         
         let res = SecItemDelete(query as CFDictionary)
         
-        guard res == errSecSuccess else { throw KeychainError.unhandled(SecCopyErrorMessageString(res, nil)! as String)}
+        guard res == errSecSuccess else { throw KeychainError.unhandled(message:SecCopyErrorMessageString(res, nil)! as String)}
     }
 }

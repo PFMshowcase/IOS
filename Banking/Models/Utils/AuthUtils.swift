@@ -7,23 +7,13 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 /* =====================================================
  
     Auth Types and Errors
  
    ===================================================== */
-
-
-enum AuthError: Error {
-    case alreadyInitialized
-    case notInitialized
-    case alreadySignedIn
-    case incorrectPin
-    case biometricAuthFailed
-    case biometricsNotAvailable
-    case generic
-}
 
 enum AuthMethods {
     case logIn
@@ -33,21 +23,6 @@ enum AuthMethods {
 enum AuthBiometricFlag {
     case biometrics
     case noBiometrics
-}
-
-struct AuthBasiqUser {
-    var id, token: String
-    var expiry: Date
-    
-    init?(dict: [String: Any]) {
-        guard let reqId = dict["basiq-uuid"] as? String,
-              let reqToken = dict["basiq-token"] as? String,
-              let reqExpiry = dict["basiq-token-expiry"] as? Timestamp else { return nil }
-        
-        self.id = reqId
-        self.token = reqToken
-        self.expiry = reqExpiry.dateValue()
-    }
 }
 
 struct AuthSignInMethods: Codable, Equatable {
@@ -67,20 +42,34 @@ struct AuthSignInMethods: Codable, Equatable {
     @Published var lName: String
     @Published var display: String?
     
-    init(fName: String, lName: String, display: String? = nil) {
+    var toDict: [String:Any] {
+        ["fName": fName, "lName": lName, "display": display as Any]
+    }
+    
+    init (fName: String, lName: String, display: String? = nil) {
         self.fName = fName
         self.lName = lName
         self.display = display
+    }
+    
+    init? (dict: [String: Any]?) {
+        guard let _fName = dict?["fName"] as? String,
+              let _lName = dict?["lName"] as? String else { return nil }
+        
+        self.fName = _fName
+        self.lName = _lName
+        self.display = dict?["display"] as? String
     }
 }
 
 @objc protocol UserType {
     var email: String { get }
     var name: UsersName { get }
-    var uid: String { get }
-    var totalBalance: Double { get }
+    var total_balance: Double { get }
     var accounts: [Account] { get }
     var transactions: [Transaction] { get }
+    var basiq_user: BasiqUser { get }
+    var fir_user: FirebaseAuth.User { get }
 }
 
 /* =====================================================
@@ -107,11 +96,4 @@ struct KeychainMethods {
 enum KeychainTypes: String {
     case password = "password"
     case pin = "pin"
-}
-
-enum KeychainError: Error {
-    case unhandled(String)
-    case unexpectedValues
-    case uuidNeededToUpdate
-    case accountOrDataNeeded
 }

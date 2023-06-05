@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// TODO: Make a single function for handling errors (and maybe dispalying toasts?)
+
 struct SignInFlow: View {
     let preferred_auth = Auth.get_available_sign_in_method()
     let auth: Auth
@@ -22,13 +24,15 @@ struct SignInFlow: View {
     
     private func userPass () -> some View {
         func sign_in_with_email_pass () {
-            do {
-                try auth.createUser(username: "test", password: "1234", name: UsersName(fName: "first", lName: "last"))
-//                try auth.signIn(username: email, password: password)
-            } catch let err{
-                print(err)
-//                TODO: Handle incorrect email and password (10 attempts before time out?)
-                print("error signing in with email and password")
+            Task {
+                do {
+                    try await auth.signIn(username: email, password: password)
+                } catch let error as AuthError {
+                    print(type(of: error))
+                    print(error.kind, error.error, error.message as Any)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
         
@@ -42,12 +46,15 @@ struct SignInFlow: View {
     
     private func pin () -> some View {
         func sign_in_with_pin () {
-            do {
-                try auth.signIn(pin: input_pin)
-            } catch let err {
-                print(err)
-//                TODO: Handle incorrect pin (5 attempts before reverting to email and pass)
-                print("error signing in with pin")
+            Task {
+                do {
+                    try await auth.signIn(pin: input_pin)
+                } catch let error as AuthError {
+                    print(type(of: error))
+                    print(error.kind, error.error, error.message as Any)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
         
@@ -64,10 +71,15 @@ struct SignInFlow: View {
         } else if preferred_auth!.contains(.biometric) {
             pin()
                 .onAppear() {
-                    do {
-                        try auth.signIn(.biometrics)
-                    } catch {
-                        print("FaceId failed, reverting to pin")
+                    Task {
+                        do {
+                            try await auth.signIn(.biometrics)
+                        } catch let error as AuthError {
+                            print(type(of: error))
+                            print(error.kind, error.error, error.message as Any)
+                        } catch {
+                            print(error.localizedDescription)
+                        }
                     }
                 }
         } else if preferred_auth!.contains(.pin) {
