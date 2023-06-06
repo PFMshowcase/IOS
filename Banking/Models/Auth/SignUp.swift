@@ -23,7 +23,7 @@ extension Auth {
                 
         if self.preview {
             try Auth.add_available_sign_in_methods(available_auth_methods)
-            self.current = try UserDetails(preview: true)
+            self.current = try User(preview: true)
             return
         }
         
@@ -31,7 +31,7 @@ extension Auth {
         let basiq_user = try await create_fir_basiq_user(username: username, password: password, name: name)
         
         try Auth.add_available_sign_in_methods(available_auth_methods)
-        self.current = try UserDetails(basiq_user: basiq_user, name: name)
+        self.current = try User(basiq_user: basiq_user, name: name)
         Auth.set_last_user(username)
     }
     

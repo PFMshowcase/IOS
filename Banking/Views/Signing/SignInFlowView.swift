@@ -38,8 +38,8 @@ struct SignInFlow: View {
         
         return VStack {
             Text("Email and Password")
-            TextField("Email", text: $email)
-            TextField("Password", text: $password)
+            TextField("Email", text: $email).autocorrectionDisabled().textInputAutocapitalization(.never)
+            SecureField("Password", text: $password)
             Button("Submit", action: sign_in_with_email_pass)
         }
     }
@@ -60,7 +60,7 @@ struct SignInFlow: View {
         
         return VStack {
             Text("pin")
-            TextField("Pin", text: $input_pin)
+            TextField("Pin", text: $input_pin).autocorrectionDisabled().textInputAutocapitalization(.never)
             Button("Submit", action: sign_in_with_pin)
         }
     }

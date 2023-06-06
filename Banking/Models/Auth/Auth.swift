@@ -20,7 +20,7 @@ class Auth: NSObject, ObservableObject {
     static var auth:Auth?
     
 //    Current User & observation
-    @Published @objc dynamic var current: UserType? = nil
+    @Published @objc dynamic var current: User? = nil
     private var observation: NSKeyValueObservation?
     
 //    Internal vars
@@ -123,57 +123,6 @@ extension Auth {
     static func get_last_user () -> String? {
         return defaults.string(forKey: "last-user")
     }
-}
-
-/* =====================================================
- 
- Internal class for managin gthe current users details
- 
- ===================================================== */
-
-extension Auth {
-//    TODO: This class should be seperate from the Auth class and should handle the user information
-    internal class UserDetails : NSObject, UserType {
-        private(set) var email: String
-        private(set) var name: UsersName
-        private(set) var total_balance: Double
-        private(set) var accounts: [Account]
-        private(set) var transactions: [Transaction]
-        private(set) var basiq_user: BasiqUser
-        private(set) var fir_user: FirebaseAuth.User
-        
-        init (basiq_user: BasiqUser, name: UsersName) throws {
-            guard let fir_auth = FirebaseAuth.Auth.auth().currentUser else { throw AuthError.unAuthenticated() }
-            
-            self.fir_user = fir_auth
-            self.basiq_user = basiq_user
-            self.email = fir_auth.email!
-            self.name = name
-//            TODO: Grab these details from the basiq api
-            self.total_balance = 20000
-            self.accounts = [Account(provider: "rand", type: "mortgage", name: "name", funds: 20000, balance: 1200, monthlyIncrease: 200, colour: .bg)]
-            self.transactions = [Transaction(merchant: "test", merchantDetail: "test", merchantWebsite: "test.com", location: "test", imageLink: "yurl", amount: 1020)]
-            
-            let basiq = try BasiqApi.initialize(basiq_user)
-            
-            try basiq.req("users/{id}", method: .get) { (data: TestBasiqUser?, err) in
-                print(err)
-                print(data?.id, data?.type, data?.name, data?.email)
-            }
-        }
-        
-        init (preview: Bool) throws {
-            throw AuthError.notImplemented()
-        }
-        
-    }
-
-}
-
-
-struct TestBasiqUser: Decodable {
-    var id, type: String
-    var email, name: String?
 }
 
 

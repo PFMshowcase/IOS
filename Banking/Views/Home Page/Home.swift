@@ -86,9 +86,3 @@ struct Home: View {
         .scrollBounceBehavior(.basedOnSize)
     }
 }
-
-//struct Home_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Home()
-//    }
-//}

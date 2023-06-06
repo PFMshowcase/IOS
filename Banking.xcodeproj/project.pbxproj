@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6E13E4EA2A115EE800A2552E /* SignInFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E13E4E92A115EE800A2552E /* SignInFlowView.swift */; };
 		6E13E4EC2A115EF600A2552E /* CreateFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E13E4EB2A115EF600A2552E /* CreateFlowView.swift */; };
+		6E3C751F2A2EC742008B6A55 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3C751E2A2EC741008B6A55 /* User.swift */; };
+		6E3C75222A2EF0B2008B6A55 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3C75212A2EF0B2008B6A55 /* Accounts.swift */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
 		6EAD85612A0CD33A0064E595 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85602A0CD33A0064E595 /* SDWebImageSwiftUI */; };
 		6EAD85642A0CD38E0064E595 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85632A0CD38E0064E595 /* SDWebImageSVGCoder */; };
@@ -105,6 +107,8 @@
 /* Begin PBXFileReference section */
 		6E13E4E92A115EE800A2552E /* SignInFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFlowView.swift; sourceTree = "<group>"; };
 		6E13E4EB2A115EF600A2552E /* CreateFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlowView.swift; sourceTree = "<group>"; };
+		6E3C751E2A2EC741008B6A55 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6E3C75212A2EF0B2008B6A55 /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EAD85942A0CFF7A0064E595 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -210,6 +214,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E3C75202A2EF09B008B6A55 /* Codable */ = {
+			isa = PBXGroup;
+			children = (
+				6E3C75232A2EF7A6008B6A55 /* Decodable */,
+			);
+			path = Codable;
+			sourceTree = "<group>";
+		};
+		6E3C75232A2EF7A6008B6A55 /* Decodable */ = {
+			isa = PBXGroup;
+			children = (
+				6E3C75212A2EF0B2008B6A55 /* Accounts.swift */,
+			);
+			path = Decodable;
+			sourceTree = "<group>";
+		};
 		6EAD85962A0E04690064E595 /* Signing */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,12 +285,14 @@
 		6EC362B129F7BBFA00541040 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6E3C75202A2EF09B008B6A55 /* Codable */,
 				6EAD85A32A0F5D6E0064E595 /* Auth */,
 				6EAD85992A0E53910064E595 /* Utils */,
 				6EC362AF29F7BBF000541040 /* Account.swift */,
 				6EC362B429F7BCF900541040 /* Transaction.swift */,
 				6EC362B829F7D5AA00541040 /* Insights.swift */,
 				6EED4B1D2A2ADA5F00CA60FD /* BasiqApi.swift */,
+				6E3C751E2A2EC741008B6A55 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -565,6 +587,7 @@
 				6EAD85952A0CFF7A0064E595 /* Home.swift in Sources */,
 				6EED4B222A2AE34B00CA60FD /* BasiqUtils.swift in Sources */,
 				6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */,
+				6E3C751F2A2EC742008B6A55 /* User.swift in Sources */,
 				6EC362B029F7BBF000541040 /* Account.swift in Sources */,
 				6EC362B729F7D51B00541040 /* Auth.swift in Sources */,
 				6EF2991929E69EEA00D91255 /* BankingApp.swift in Sources */,
@@ -573,6 +596,7 @@
 				6EAD859B2A0E53C10064E595 /* TextUtils.swift in Sources */,
 				6E13E4EC2A115EF600A2552E /* CreateFlowView.swift in Sources */,
 				6EC362AD29F7B5D100541040 /* AccountsView.swift in Sources */,
+				6E3C75222A2EF0B2008B6A55 /* Accounts.swift in Sources */,
 				6EED4B1E2A2ADA5F00CA60FD /* BasiqApi.swift in Sources */,
 				6EC362B529F7BCF900541040 /* Transaction.swift in Sources */,
 				6EC362BB2A090D8000541040 /* FrameUtils.swift in Sources */,

@@ -61,7 +61,7 @@ struct CreateUserPass: View {
     var body: some View {
         VStack {
             Text("Email and Password - create")
-            TextField("Email", text: $username)
+            TextField("Email", text: $username).autocorrectionDisabled().textInputAutocapitalization(.never)
             SecureField("Password", text: $password)
             Button("Submit", action: {() in finish()})
         }

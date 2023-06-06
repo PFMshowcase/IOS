@@ -62,16 +62,6 @@ struct AuthSignInMethods: Codable, Equatable {
     }
 }
 
-@objc protocol UserType {
-    var email: String { get }
-    var name: UsersName { get }
-    var total_balance: Double { get }
-    var accounts: [Account] { get }
-    var transactions: [Transaction] { get }
-    var basiq_user: BasiqUser { get }
-    var fir_user: FirebaseAuth.User { get }
-}
-
 /* =====================================================
  
     Keychain Types and Errors

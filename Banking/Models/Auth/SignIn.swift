@@ -27,7 +27,7 @@ extension Auth {
         }
         
         if self.preview {
-            current = try UserDetails(preview: true)
+            current = try User(preview: true)
         }
         
         try await FirebaseAuth.Auth.auth().signIn(withEmail: username, password: password)
@@ -44,7 +44,7 @@ extension Auth {
         }
         
         print("username: "+username + " - password: " + password)
-        current = try UserDetails(basiq_user: resBasiqUser, name:resName)
+        current = try User(basiq_user: resBasiqUser, name:resName)
         Auth.set_last_user(username)
     }
     
