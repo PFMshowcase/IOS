@@ -10,22 +10,12 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct AccountsView: View {
-    var auth: Auth?
-    var user: UserType?
-    
-    init() {
-        do {
-            auth = try Auth.getAuth()
-            user = auth?.current
-        } catch {
-            print("Error getting user")
-        }
-    }
+    var user: User
     
     var body: some View {
         ScrollView {
             HStack{
-                ForEach(user!.accounts) {account in
+                ForEach(user.accounts ?? []) {account in
                     AccountWidget(account: account)
                 }
             }
@@ -36,7 +26,7 @@ struct AccountsView: View {
 
 struct AccountWidget: View {
     
-    var account: Account
+    var account: SingleDecodableAccount
     
     var body: some View {
 //        VStack to create the background and a frame to contain the widget
@@ -46,7 +36,7 @@ struct AccountWidget: View {
 //                Horizontal Stack with bank name and logo
                 HStack() {
                     WebImage(url: account.logo)
-                    Text(account.provider)
+                    Text(account.institution)
                         .font(.normal)
                         .frame(maxWidth: .infinity, alignment:.trailing)
                 }
@@ -57,7 +47,7 @@ struct AccountWidget: View {
                     .font(.normal)
 //                Available Funds
                 Spacer()
-                Text("$"+String(account.funds))
+                Text("$"+String(account.balance ?? "_0"))
                     .font(.h2)
                     .vAlignment(.bottom)
                 
@@ -82,8 +72,8 @@ struct AccountWidget: View {
 
 
 
-struct AccountsView_Previews: PreviewProvider {
-    static var previews: some View {
-        AccountsView().previewLayout(.sizeThatFits)
-    }
-}
+//struct AccountsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AccountsView(user).previewLayout(.sizeThatFits)
+//    }
+//}

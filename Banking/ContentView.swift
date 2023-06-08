@@ -11,8 +11,8 @@ struct ContentView: View {
     @StateObject var auth: Auth = try! Auth.getAuth()
     
     var body: some View {
-        if let current = auth.current {
-            Home(current)
+        if let user = auth.user {
+            Home(user)
         } else {
             SigningView(auth)
         }

@@ -22,18 +22,14 @@ extension Auth {
     func signIn (username: String, password: String) async throws -> Void {
         var fir_err: Error?
         
-        guard self.current == nil else {
+        guard self.user == nil else {
             throw AuthError.alreadySignedIn()
         }
         
-        if self.preview {
-            current = try User(preview: true)
-        }
+        if self.preview { self.user = try User(preview: true) }
         
         try await FirebaseAuth.Auth.auth().signIn(withEmail: username, password: password)
-                
-        if fir_err != nil { throw fir_err! }
-        
+                                
         let res = try await functions.httpsCallable("loginuser").call()
         
         guard let resBasiqData = res.data as? [String: Any],
@@ -43,8 +39,10 @@ extension Auth {
             return
         }
         
+        if fir_err != nil { throw fir_err! }
+        
         print("username: "+username + " - password: " + password)
-        current = try User(basiq_user: resBasiqUser, name:resName)
+        try await User.create(basiq_user: resBasiqUser, name:resName)
         Auth.set_last_user(username)
     }
     

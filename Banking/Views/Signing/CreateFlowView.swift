@@ -15,9 +15,10 @@ struct CreateFlowView: View {
     @State var password: String = ""
     @State var screen = ""
     @State var pin: String = ""
+    @State var enable_biometrics: Bool = false
     @StateObject var name: UsersName = UsersName(fName: "", lName: "")
     
-    init (_ auth: Auth) {
+    init (_ auth: Auth, _ switch_method: () -> Void) {
         self.auth = auth
     }
     
@@ -43,11 +44,17 @@ struct CreateFlowView: View {
     }
     
     var body: some View {
-        switch screen {
-            case "info": CreateUserInfo(finish: infoComplete, name: name)
-            case "alternatives": CreatePinAndBio(finish: pinBioComplete, pin:$pin)
-            default: CreateUserPass(finish: userPassComplete, username: $username, password: $password)
+        VStack {
+            Text("SimpliFunds")
+                .font(.h1)
+                .bAlignment(.center)
+            switch screen {
+                case "info": CreateUserInfo(finish: infoComplete, name: name)
+            case "alternatives": CreatePinAndBio(finish: pinBioComplete, pin:$pin, bio:$enable_biometrics)
+                default: CreateUserPass(finish: userPassComplete, username: $username, password: $password)
+            }
         }
+        .font(.normal)
     }
 }
 
@@ -59,24 +66,38 @@ struct CreateUserPass: View {
     
     
     var body: some View {
-        VStack {
-            Text("Email and Password - create")
-            TextField("Email", text: $username).autocorrectionDisabled().textInputAutocapitalization(.never)
-            SecureField("Password", text: $password)
-            Button("Submit", action: {() in finish()})
-        }
+            VStack {
+                TextField("Email", text: $username)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .textFieldStyles()
+                    .keyboardType(.emailAddress)
+                SecureField("Password", text: $password)
+                    .textFieldStyles()
+                Button("Next", action: {() in finish()})
+                    .buttonStyles(.secondary.light)
+            }
+            .vAlignment(.top)
+            .hAlignment(.center)
+            .textFieldStyle(.roundedBorder)
     }
 }
 
 struct CreatePinAndBio: View {
     let finish: () -> Void
     @Binding var pin: String
+    @Binding var bio: Bool
     
     var body: some View {
         SecureField("Pin", text: $pin)
-        Button("Enable biometrics", action: {() in print("enable biometrics")})
+            .keyboardType(.numberPad)
+            .textFieldStyles()
+        Toggle("Enable biometrics", isOn: $bio)
+            .buttonStyles(.secondary.light)
         Button("Skip", action: {() in finish()})
+            .buttonStyles(.secondary.light)
         Button("Submit", action: {() in finish()})
+            .buttonStyles(.secondary.light)
     }
 }
 
@@ -86,7 +107,14 @@ struct CreateUserInfo: View {
     @ObservedObject var name: UsersName
     
     var body: some View {
-        TextField("Name", text:$name.fName)
-        Button("Submit", action: {() in finish()})
+        VStack {
+            TextField("Name", text:$name.fName)
+                .textFieldStyles()
+            Button("Next", action: {() in finish()})
+                .buttonStyles(.secondary.light)
+        }
+        .vAlignment(.top)
+        .hAlignment(.center)
+        .textFieldStyle(.roundedBorder)
     }
 }

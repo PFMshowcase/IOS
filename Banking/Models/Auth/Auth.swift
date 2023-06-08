@@ -20,7 +20,8 @@ class Auth: NSObject, ObservableObject {
     static var auth:Auth?
     
 //    Current User & observation
-    @Published @objc dynamic var current: User? = nil
+    @Published @objc dynamic var user: User? = User.current
+    
     private var observation: NSKeyValueObservation?
     
 //    Internal vars
@@ -33,6 +34,14 @@ class Auth: NSObject, ObservableObject {
     
     private override init () {
         self.preview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+        
+        super.init()
+    }
+    
+    func updateUser(_ user: User) {
+        Task { @MainActor in
+            self.user = user
+        }
     }
 }
 
@@ -45,7 +54,7 @@ class Auth: NSObject, ObservableObject {
     
 extension Auth {
     func subscribeToAuthUpdates (_ observer_func: @escaping (Auth)->Void) {
-        self.observation = observe(\.current, options: [.new]) { object, change in
+        self.observation = observe(\.user, options: [.new]) { object, change in
             observer_func(try! Auth.getAuth())
         }
     }

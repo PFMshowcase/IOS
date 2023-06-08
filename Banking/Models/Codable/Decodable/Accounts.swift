@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class SingleDecodableAccount: Decodable {
+final class SingleDecodableAccount: Decodable, Identifiable {
     let type, id, accountNo, connection, currency, institution, lastUpdated, name, status: String
     let accountHolder, availableFunds, balance, creditLimit: String?
     

@@ -14,16 +14,14 @@ import FirebaseFirestore
 extension Auth {
 //    TODO: If user creation fails after firebase user has been made, delete firebase user as well as any created data
     func createUser (username: String, password: String, name: UsersName, pin: String? = nil, biometrics: AuthBiometricFlag = .noBiometrics) async throws -> Void {
-        guard self.current == nil else {
-            throw AuthError.alreadySignedIn()
-        }
+        guard self.user == nil else { throw AuthError.alreadySignedIn() }
         
 //        If successful then add keychain and user defaults
         let available_auth_methods = try create_local_sign_in(username: username, password: password, pin: pin, biometrics: biometrics)
                 
         if self.preview {
             try Auth.add_available_sign_in_methods(available_auth_methods)
-            self.current = try User(preview: true)
+            self.user = try User(preview: true)
             return
         }
         
@@ -31,7 +29,7 @@ extension Auth {
         let basiq_user = try await create_fir_basiq_user(username: username, password: password, name: name)
         
         try Auth.add_available_sign_in_methods(available_auth_methods)
-        self.current = try User(basiq_user: basiq_user, name: name)
+        try await User.create(basiq_user: basiq_user, name: name)
         Auth.set_last_user(username)
     }
     

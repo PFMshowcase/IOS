@@ -8,33 +8,32 @@
 import SwiftUI
 
 struct Home: View {
-    var user: UserType
+    var user: User
     
-    init(_ user: UserType) {
+    init(_ user: User) {
         self.user = user
+        print(user.accounts)
     }
     
     var body: some View {
+        switch user.accounts {
+        case nil: BasiqConsentView(user: user)
+        default: MainHome(user: user)
+        }
+    }
+        
+}
+
+
+struct MainHome: View {
+    var user: User
+        
+    var body: some View {
         ScrollView {
             VStack (spacing:30) {
-//                Button("test") {
-//                    do{
-//                        let basiq = BasiqApi.api!
-//                        print(basiq.basiq_data.id)
-//                        print(basiq.basiq_data.token)
-//                        try basiq.req("users/\(basiq.basiq_data.id)", method: .get) { (data: Data?, err) in
-//                            print(err)
-//                            print("basiq request")
-//                            print(data)
-//                        }
-//                    }
-//                    catch {
-//                        print(error)
-//                    }
-//                }
                 VStack (spacing:30) {
                     HStack {
-                        Text("Hello, " + user.name.fName).font(.h1)
+                        Text("Hello, " + (user.name.fName)).font(.h1)
                     }
                     .hAlignment()
                     
@@ -57,7 +56,7 @@ struct Home: View {
                         .font(.h1)
                         .hAlignment()
                     
-                    AccountsView()
+                    AccountsView(user: user)
                         .hAlignment()
                 }
                 .hAlignment(.center)

@@ -34,28 +34,10 @@ struct SigningView: View {
     
     var body: some View {
         VStack {
-            Text("Signing flow")
-                .font(.largeTitle)
-                .hAlignment(.center)
             switch method {
-            case .create:CreateFlowView(auth)
-            case .logIn:SignInFlow(auth)
+            case .create:CreateFlowView(auth, swapMethod)
+            case .logIn:SignInFlow(auth, swapMethod)
             }
-            HStack {
-                Button(action: swapMethod) {
-                    if method == .logIn {
-                        Text("Don't have an account?")
-                        Text("Sign up")
-                            .foregroundColor(.secondary.base)
-                    } else {
-                        Text("Already have an account?")
-                        Text("Sign in")
-                            .foregroundColor(.secondary.base)
-                    }
-                }
-            }
-            .font(.extraSmall)
-            .hAlignment(.center)
         }
         .padding([.top, .bottom, .trailing, .leading], 15)
         .bAlignment(.center)
@@ -66,10 +48,10 @@ struct SigningView: View {
 
 
 
-//struct Signing_Preview: PreviewProvider {
-//    
-//    
-//    static var previews: some View {
-//        Signing(try! Auth.getAuth()).previewLayout(.sizeThatFits)
-//    }
-//}
+struct Signing_Preview: PreviewProvider {
+    
+    
+    static var previews: some View {
+        SigningView(try! Auth.getAuth()).previewLayout(.sizeThatFits)
+    }
+}

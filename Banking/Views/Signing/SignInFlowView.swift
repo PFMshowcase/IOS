@@ -13,9 +13,11 @@ import SwiftUI
 struct SignInFlow: View {
     let preferred_auth = Auth.get_available_sign_in_method()
     let auth: Auth
+    let switch_method: () -> Void
     
-    init (_ auth:Auth) {
+    init (_ auth:Auth, _ switch_method: @escaping () -> Void) {
         self.auth = auth
+        self.switch_method = switch_method
     }
     
     @State var input_pin: String = ""
@@ -66,6 +68,7 @@ struct SignInFlow: View {
     }
     
     var body: some View {
+        Button("switch", action: switch_method)
         if preferred_auth == nil {
             userPass()
         } else if preferred_auth!.contains(.biometric) {
