@@ -48,7 +48,7 @@ struct WebView: UIViewRepresentable {
         print(url.absoluteString)
         let request = URLRequest(url: url)
         webView.load(request)
-        webView.evaluateJavaScript("var style = document.createElement(‘style’); style.innerHTML = “input,select:focus, textarea {font-size: 16px !important;}”; document.head.appendChild(style);") { res, err in
+        webView.evaluateJavaScript("var style = document.createElement('style'); style.innerHTML = 'input,select:focus, textarea {font-size: 16px !important;}'; document.head.appendChild(style);") { res, err in
             print(err, res)
         }
     }
@@ -69,6 +69,7 @@ struct WebView: UIViewRepresentable {
             
             if let urlStr = navigationAction.request.url?.absoluteString, urlStr == urlToMatch {
                 parent.finished()
+                decisionHandler(.cancel)
             }
             decisionHandler(.allow)
         }
