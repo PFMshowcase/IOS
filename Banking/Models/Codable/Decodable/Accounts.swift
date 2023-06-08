@@ -8,9 +8,14 @@
 import Foundation
 import SwiftUI
 
+typealias Account = SingleDecodableAccount
+
 final class SingleDecodableAccount: Decodable, Identifiable {
-    let type, id, accountNo, connection, currency, institution, lastUpdated, name, status: String
+    let type, id, accountNo, connection, currency, lastUpdated, name, status: String
     let accountHolder, availableFunds, balance, creditLimit: String?
+    var accClass: DecodableClassAccounts
+    let accLinks: DecodableLinkAccounts
+    var institution: DecodableInstitution?
     
     var colour: Color
     var logo: URL?
@@ -23,7 +28,6 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         self.accountNo = try values.decode(String.self, forKey: .accountNo)
         self.connection = try values.decode(String.self, forKey: .connection)
         self.currency = try values.decode(String.self, forKey: .currency)
-        self.institution = try values.decode(String.self, forKey: .institution)
         self.lastUpdated = try values.decode(String.self, forKey: .lastUpdated)
         self.name = try values.decode(String.self, forKey: .name)
         self.status = try values.decode(String.self, forKey: .status)
@@ -31,10 +35,11 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         self.availableFunds = try values.decode(String.self, forKey: .availableFunds)
         self.balance = try values.decode(String.self, forKey: .balance)
         self.creditLimit = try values.decode(String.self, forKey: .creditLimit)
+        self.accClass = try values.decode(DecodableClassAccounts.self, forKey: .accClass)
+        self.accLinks = try values.decode(DecodableLinkAccounts.self, forKey: .accLinks)
 
-
-        self.colour = .primary.base
-        self.logo = URL(string:"example.com")
+        let colour_options: [Color] = [.secondary.light, .primary.dark, .tertiary.base]
+        self.colour = colour_options.randomElement() ?? .primary.base
     }
     
     enum CodingKeys: String, CodingKey {
@@ -43,7 +48,6 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         case accountNo
         case connection
         case currency
-        case institution
         case lastUpdated
         case name
         case status
@@ -51,6 +55,32 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         case availableFunds
         case balance
         case creditLimit
+        case accClass = "class"
+        case accLinks = "links"
+    }
+}
+
+struct DecodableClassAccounts: Decodable {
+    var type: String
+    var product: String
+}
+
+struct DecodableLinkAccounts: Decodable {
+    var institution: String
+    var transactions: String
+    var account: String
+    
+    enum CodingKeys: String, CodingKey {
+        case institution
+        case transactions
+        case account = "self"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.institution = try container.decode(String.self, forKey: .institution)
+        self.transactions = try container.decode(String.self, forKey: .transactions)
+        self.account = try container.decode(String.self, forKey: .account)
     }
 }
 

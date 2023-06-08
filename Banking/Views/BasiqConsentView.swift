@@ -18,7 +18,6 @@ struct BasiqConsentView: View {
         let token: String = user.basiq_user.token
         self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
         self.open = true
-        print(self.url, user.basiq_user.token)
     }
     
     func finished() {
@@ -37,20 +36,26 @@ struct BasiqConsentView: View {
 struct WebView: UIViewRepresentable {
     var url: URL
     var finished: () -> Void
+    let source_script: String = "var meta = document.createElement('meta');" +
+        "meta.name = 'viewport';" +
+        "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
+        "var head = document.getElementsByTagName('head')[0];" +
+        "head.appendChild(meta);"
     
     func makeUIView(context: Context) -> WKWebView {
-        let webKit = WKWebView()
+        let script = WKUserScript(source: source_script, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        let conf = WKWebViewConfiguration()
+        conf.userContentController = WKUserContentController()
+        conf.userContentController.addUserScript(script)
+        
+        let webKit = WKWebView(frame: .zero, configuration: conf)
         webKit.navigationDelegate = context.coordinator
         return webKit
     }
     
     func updateUIView(_ webView: WKWebView, context: Context) {
-        print(url.absoluteString)
         let request = URLRequest(url: url)
         webView.load(request)
-        webView.evaluateJavaScript("var style = document.createElement('style'); style.innerHTML = 'input,select:focus, textarea {font-size: 16px !important;}'; document.head.appendChild(style);") { res, err in
-            print(err, res)
-        }
     }
     
     func makeCoordinator() -> WebViewCoordinator {
@@ -65,11 +70,13 @@ struct WebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            let urlToMatch = "https://finished-notexistingurl.com"
-            
-            if let urlStr = navigationAction.request.url?.absoluteString, urlStr == urlToMatch {
-                parent.finished()
-                decisionHandler(.cancel)
+            let urlToMatch = "finished-notexistingurl.com"
+            if (navigationAction.navigationType == .other) {
+                if let redirectedUrl = navigationAction.request.url, redirectedUrl.host == urlToMatch{
+                    parent.finished()
+                    decisionHandler(.cancel)
+                    return
+                }
             }
             decisionHandler(.allow)
         }

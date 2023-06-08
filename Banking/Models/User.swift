@@ -39,19 +39,31 @@ class User : NSObject, ObservableObject {
         self.total_balance = 20000
         self.transactions = nil
         
-        let decodedAccounts = try await basiq.req("users/{id}/accounts", method: .get, type: DecodableAccounts.self)
-        
-        if decodedAccounts.data.count > 0 { self.accounts = decodedAccounts.data }
-        else { self.accounts = nil }
+        self.accounts = try await getAccounts(basiq)
     }
     
     static func create (basiq_user: BasiqUser, name: UsersName) async throws { User.current = try await User.init(basiq_user, name) }
     
     func refreshBasiq() async throws {
-        let decodedAccounts = try await BasiqApi.api?.req("users/{id}/accounts", method: .get, type: DecodableAccounts.self)
-        
-        self.accounts = decodedAccounts?.data
+        self.accounts = try await getAccounts(BasiqApi.api!)
+        Auth.auth?.updateUser(User.current!)
     }
+    
+    
 }
 
+fileprivate func getAccounts(_ basiq: BasiqApi) async throws -> [SingleDecodableAccount]? {
+    let decoded_acc_data = try await basiq.req("users/{id}/accounts", method: .get, type: DecodableAccounts.self)
+    let decoded_accs = decoded_acc_data.data
+    
+    for acc in decoded_accs {
+        let institution = try await basiq.req(acc.accLinks.institution, method: .get, type: DecodableInstitution.self)
+        acc.institution = institution
+        acc.logo = URL(string:institution.logo.links.square)
+        if acc.accClass.product.count > 20 { acc.accClass.product = institution.shortName }
+    }
+    
+    if decoded_accs.count > 0 { return decoded_accs }
+    else { return nil }
+}
 

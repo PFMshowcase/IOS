@@ -10,6 +10,8 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFunctions
+import SDWebImage
+import SDWebImageSVGCoder
 
 var functions = Functions.functions(region: "australia-southeast1")
 
@@ -18,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        Initialize firebase
         FirebaseApp.configure()
         functions.useEmulator(withHost: "localhost", port: 5001)
+        
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        
         do {
             try Auth.setup()
             return true

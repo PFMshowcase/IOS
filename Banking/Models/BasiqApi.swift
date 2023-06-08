@@ -30,42 +30,43 @@ class BasiqApi {
     
 //    Callback
     func req<ResType>(_ path: String, method: BasiqHTTPMethods.get = .get, completionHandler: @escaping apiCompletionHandler<ResType>) throws where ResType: Decodable {
-        let req = AF.request(self.createURL(path), method: .get, headers: self.headers)
+        let req = AF.request(try self.createURL(path), method: .get, headers: self.headers)
         
         try getResponse(req: req, completionHandler: completionHandler)
     }
     
     func req<ResType>(_ path: String, method: BasiqHTTPMethods.post, parameters: Encodable, encoder: ParameterEncoder = JSONParameterEncoder.default, completionHandler: @escaping apiCompletionHandler<ResType>) throws where ResType: Decodable {
-        let req = AF.request(self.createURL(path), method: .post, parameters: parameters, encoder: encoder, headers: self.headers)
+        let req = AF.request(try self.createURL(path), method: .post, parameters: parameters, encoder: encoder, headers: self.headers)
         
         try getResponse(req: req, completionHandler: completionHandler)
     }
     
 //    TODO: Do I throw this error or a custom one?
     func req(_ path: String, method: BasiqHTTPMethods.delete) throws {
-        let req = AF.request(self.createURL(path), method:.delete, headers: self.headers).validate()
+        let req = AF.request(try self.createURL(path), method:.delete, headers: self.headers).validate()
         
         if req.error != nil { throw req.error! }
     }
     
 //    Async
     func req<ResType>(_ path: String, method: BasiqHTTPMethods.get = .get, type: ResType.Type) async throws -> ResType where ResType: Decodable {
-        let req = AF.request(self.createURL(path), method: .get, headers: self.headers)
+        let req = AF.request(try self.createURL(path), method: .get, headers: self.headers)
         return try await getResponse(req, type)
     }
     
     @discardableResult func req<ResType>(_ path: String, method: BasiqHTTPMethods.post, parameters: Encodable, encoder: ParameterEncoder = JSONParameterEncoder.default, type: ResType.Type) async throws -> ResType where ResType: Decodable {
-        let req = AF.request(self.createURL(path), method: .post, parameters: parameters, encoder: encoder, headers: self.headers)
+        let req = AF.request(try self.createURL(path), method: .post, parameters: parameters, encoder: encoder, headers: self.headers)
         
         return try await getResponse(req, type)
     }
     
-    private func createURL(_ path:String) -> String {
-        var url = self.url + path
+    private func createURL(_ path:String) throws -> String {
+        var formatted_path = path
+        if formatted_path.first == "/" { formatted_path.removeFirst() }
         
+        var url = path.contains("http") ? formatted_path : self.url + formatted_path
         url.replace("{id}", with: self.basiq_data.id)
         
-        print(url)
         return url
     }
     

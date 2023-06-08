@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct Home: View {
-    var user: User
-    
-    init(_ user: User) {
-        self.user = user
-        print(user.accounts)
-    }
+    @ObservedObject var auth: Auth
     
     var body: some View {
-        switch user.accounts {
-        case nil: BasiqConsentView(user: user)
-        default: MainHome(user: user)
+        switch auth.user!.accounts {
+        case nil: BasiqConsentView(user: auth.user!)
+        default: MainHome(user: auth.user!)
         }
     }
         

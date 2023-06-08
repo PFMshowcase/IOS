@@ -13,7 +13,7 @@ struct AccountsView: View {
     var user: User
     
     var body: some View {
-        ScrollView {
+        ScrollView(.horizontal) {
             HStack{
                 ForEach(user.accounts ?? []) {account in
                     AccountWidget(account: account)
@@ -36,14 +36,18 @@ struct AccountWidget: View {
 //                Horizontal Stack with bank name and logo
                 HStack() {
                     WebImage(url: account.logo)
-                    Text(account.institution)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40, alignment: .center)
+                        .cornerRadius(10)
+                    Text(account.accClass.product)
                         .font(.normal)
                         .frame(maxWidth: .infinity, alignment:.trailing)
                 }
                 .bAlignment(.top)
                 
 //                Account Type
-                Text(account.type)
+                Text(account.accClass.type)
                     .font(.normal)
 //                Available Funds
                 Spacer()

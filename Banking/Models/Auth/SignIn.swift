@@ -50,11 +50,13 @@ extension Auth {
 //    values from keychain
     func signIn (pin: String) async throws -> Void {
         let encoded_pin = pin.data(using: .utf8)!
-        let (defined_acc, defined_pin) = try manageKeychain(.read, value_data: encoded_pin, attr_service: .pin)
+        guard let last_logged_in = Auth.get_last_user() else { throw AuthError.generic() }
+        
+        let (_, defined_pin) = try manageKeychain(.read, attr_account: last_logged_in, attr_service: .pin)
         
         guard pin == defined_pin else { throw AuthError.incorrectPin() }
         
-        let (username, pswrd) = try manageKeychain(.read, attr_account: defined_acc, attr_service: .password)
+        let (username, pswrd) = try manageKeychain(.read, attr_account: last_logged_in, attr_service: .password)
         
         try await self.signIn(username: username, password: pswrd)
     }
@@ -62,7 +64,7 @@ extension Auth {
     func signIn (_ biometric: AuthBiometricFlag) async throws -> Void {
 //        Check if biometric is face or touch
 //        Use that method to prompt signing in
-//        If successful grab details from keychain
+//        If successful grab details from keychain 
         let context = LAContext()
         var error: NSError?
         
