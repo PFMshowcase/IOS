@@ -26,9 +26,8 @@ struct ButtonStyles: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.h2)
-            .frame(maxWidth: .infinity, maxHeight: 50)
-            .background(colour)
-            .cornerRadius(10)
+            .buttonStyle(.borderedProminent)
+            .tint(self.colour)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
     }

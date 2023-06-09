@@ -11,6 +11,7 @@ import SwiftUI
 
 struct CreateFlowView: View {
     var auth: Auth
+    var switch_method: () -> Void
     @State var username: String = ""
     @State var password: String = ""
     @State var screen = ""
@@ -18,7 +19,8 @@ struct CreateFlowView: View {
     @State var enable_biometrics: Bool = false
     @StateObject var name: UsersName = UsersName(fName: "", lName: "")
     
-    init (_ auth: Auth, _ switch_method: () -> Void) {
+    init (_ auth: Auth, _ switch_method: @escaping () -> Void) {
+        self.switch_method = switch_method
         self.auth = auth
     }
     
@@ -53,6 +55,9 @@ struct CreateFlowView: View {
             case "alternatives": CreatePinAndBio(finish: pinBioComplete, pin:$pin, bio:$enable_biometrics)
                 default: CreateUserPass(finish: userPassComplete, username: $username, password: $password)
             }
+            
+            Button("Login", action: switch_method)
+                .font(.extraSmall)
         }
         .font(.normal)
     }
@@ -74,7 +79,7 @@ struct CreateUserPass: View {
                     .keyboardType(.emailAddress)
                 SecureField("Password", text: $password)
                     .textFieldStyles()
-                Button("Next", action: {() in finish()})
+                Button(action: {() in finish()}, label: { Text("Next").frame(maxWidth: .infinity) })
                     .buttonStyles(.secondary.light)
             }
             .vAlignment(.top)
@@ -92,11 +97,11 @@ struct CreatePinAndBio: View {
         SecureField("Pin", text: $pin)
             .keyboardType(.numberPad)
             .textFieldStyles()
-        Toggle("Enable biometrics", isOn: $bio)
+        Toggle(isOn: $bio, label: { Text("Enable Biometrics").frame(maxWidth: .infinity, alignment: .center) })
             .buttonStyles(.secondary.light)
-        Button("Skip", action: {() in finish()})
+        Button(action: {() in finish()}, label: { Text("Skip").frame(maxWidth: .infinity, alignment: .center)} )
             .buttonStyles(.secondary.light)
-        Button("Submit", action: {() in finish()})
+        Button(action: {() in finish()}, label: { Text("Submit").frame(maxWidth: .infinity, alignment: .center) })
             .buttonStyles(.secondary.light)
     }
 }
@@ -110,7 +115,7 @@ struct CreateUserInfo: View {
         VStack {
             TextField("Name", text:$name.fName)
                 .textFieldStyles()
-            Button("Next", action: {() in finish()})
+            Button(action: {() in finish()}, label: { Text("Next").frame(maxWidth: .infinity) })
                 .buttonStyles(.secondary.light)
         }
         .vAlignment(.top)

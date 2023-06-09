@@ -17,7 +17,7 @@ final class SingleDecodableAccount: Decodable, Identifiable {
     let accLinks: DecodableLinkAccounts
     var institution: DecodableInstitution?
     
-    var colour: Color
+    var colour: (Color, Color)
     var logo: URL?
     
     init(from decoder: Decoder) throws {
@@ -38,8 +38,8 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         self.accClass = try values.decode(DecodableClassAccounts.self, forKey: .accClass)
         self.accLinks = try values.decode(DecodableLinkAccounts.self, forKey: .accLinks)
 
-        let colour_options: [Color] = [.secondary.light, .primary.dark, .tertiary.base]
-        self.colour = colour_options.randomElement() ?? .primary.base
+        let colour_options: [(Color, Color)] = [(.secondary.light, .text.black), (.primary.dark, .text.white), (.tertiary.base, .text.white)]
+        self.colour = colour_options.randomElement() ?? (.primary.base, .text.black)
     }
     
     enum CodingKeys: String, CodingKey {

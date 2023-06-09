@@ -16,15 +16,19 @@ struct SignInFlow: View {
     let switch_method: () -> Void
     var biometric: Bool = false
     
-    init (_ auth:Auth, _ switch_method: @escaping () -> Void) {
-        self.auth = auth
-        self.switch_method = switch_method
-    }
-    
     @State var input_pin: String = ""
     @State var email: String = ""
     @State var password: String = ""
+    @State var login_method: AuthSignInMethods
     
+    init (_ auth:Auth, _ switch_method: @escaping () -> Void) {
+        self.auth = auth
+        self.switch_method = switch_method
+        
+        if preferred_auth != nil && preferred_auth!.contains(.pin) { self._login_method = State(initialValue: .pin) }
+        else { self._login_method = State(initialValue: .password) }
+    }
+
     func finish(_ method: AuthSignInMethods) {
         switch method {
         case .biometric: Task { try await auth.signIn(.biometrics) }
@@ -34,33 +38,46 @@ struct SignInFlow: View {
         }
     }
     
+    func setLoginMethod(_ method: AuthSignInMethods) {
+        self.login_method = method
+    }
+    
     var body: some View {
-        Button("switch", action: switch_method)
-        if preferred_auth == nil {
-            SignInWithPassword(finish: finish, email: $email, password: $password)
-        } else if preferred_auth!.contains(.biometric) {
-            SignInWithPin(finish: finish, input_pin: $input_pin)
-                .onAppear() {
-                    finish(.biometric)
-                }
-        } else if preferred_auth!.contains(.pin) {
-            SignInWithPin(finish: finish, input_pin: $input_pin)
-        } else {
-            SignInWithPassword(finish: finish, email: $email, password: $password)
-        }
+        VStack {
+            VStack {
+                Text("SimpliFunds")
+                    .font(.h1)
+                Text("Login")
+                    .font(.h2)
+            }
+            .bAlignment(.center)
+            
+            switch self.login_method {
+            case .pin: SignInWithPin(finish: finish, setLoginMethod: setLoginMethod, input_pin: $input_pin)
+            default: SignInWithPassword(finish: finish, setLoginMethod: setLoginMethod, email: $email, password: $password)
+            }
+            
+            Button("Create an account", action: switch_method)
+                .font(.extraSmall)
+        }.onAppear() { if preferred_auth != nil && preferred_auth!.contains(.biometric) { finish(.biometric) } }
     }
 }
 
 
 struct SignInWithPin: View {
     let finish: (AuthSignInMethods) -> Void
+    let setLoginMethod: (AuthSignInMethods) -> Void
     @Binding var input_pin: String
     
     var body: some View {
         VStack {
-            Text("pin")
-            TextField("Pin", text: $input_pin).autocorrectionDisabled().textInputAutocapitalization(.never)
-            Button("Submit", action: {() in finish(.pin)})
+            SecureField("Pin", text: $input_pin)
+                .keyboardType(.numberPad)
+                .textFieldStyles()
+            Button(action: {() in finish(.pin)}, label: { Text("Submit").frame(maxWidth: .infinity) })
+                .buttonStyles(.secondary.light)
+            Button("Login with email", action: {() in setLoginMethod(.password)})
+                .font(.small)
         }
     }
     
@@ -68,15 +85,23 @@ struct SignInWithPin: View {
 
 struct SignInWithPassword: View {
     let finish: (AuthSignInMethods) -> Void
+    let setLoginMethod: (AuthSignInMethods) -> Void
     @Binding var email: String
     @Binding var password: String
     
     var body: some View {
         VStack {
-            Text("Email and Password")
-            TextField("Email", text: $email).autocorrectionDisabled().textInputAutocapitalization(.never)
+            TextField("Email", text: $email)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                .textFieldStyles()
+                .keyboardType(.emailAddress)
             SecureField("Password", text: $password)
-            Button("Submit", action: {() in finish(.password)})
+                .textFieldStyles()
+            Button(action: {() in finish(.password)}, label: { Text("Submit").frame(maxWidth: .infinity) })
+                .buttonStyles(.secondary.light)
+            Button("Login with pin", action: {() in setLoginMethod(.pin)})
+                .font(.small)
         }
     }
 }

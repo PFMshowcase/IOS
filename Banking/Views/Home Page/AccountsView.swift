@@ -68,8 +68,8 @@ struct AccountWidget: View {
             
         }
         .frame(width: 150, height: 150)
-        .background(account.colour)
-        .foregroundColor(.white).cornerRadius(16)
+        .background(account.colour.0)
+        .foregroundColor(account.colour.1).cornerRadius(16)
     }
 }
 
