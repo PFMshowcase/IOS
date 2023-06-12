@@ -33,7 +33,14 @@ struct SignInFlow: View {
         switch method {
         case .biometric: Task { try await auth.signIn(.biometrics) }
         case .password: Task { try await auth.signIn(username:self.email, password:self.password) }
-        case .pin: Task { try await auth.signIn(pin:self.input_pin) }
+        case .pin: Task {
+            do {
+                try await auth.signIn(pin:self.input_pin)
+            } catch {
+                print(error)
+                
+            }
+        }
         default: Task { try await auth.signIn(username: self.email, password: self.password)}
         }
     }

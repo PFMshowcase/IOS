@@ -7,45 +7,45 @@
 
 import SwiftUI
 
-struct Home: View {
+struct HomeNavView: View {
     @ObservedObject var auth: Auth
     
     var body: some View {
         switch auth.user!.accounts {
         case nil: BasiqConsentView(user: auth.user!)
-        default: MainHome(user: auth.user!)
+        default: HomeView(user: auth.user!)
         }
     }
         
 }
 
 
-struct MainHome: View {
+struct HomeView: View {
     var user: User
         
     var body: some View {
-        ScrollView {
+        VStack (spacing:30) {
             VStack (spacing:30) {
-                VStack (spacing:30) {
-                    HStack {
-                        Text("Hello, " + (user.name.fName)).font(.h1)
-                    }
-                    .hAlignment()
-                    
-                    VStack {
-                        Text("Your available balance is")
-                            .font(.small)
-                            .foregroundColor(.text.medium)
-                            .hAlignment()
-                        Text("$"+String(user.total_balance))
-                            .font(.banner)
-                            .hAlignment()
-                    }
-                    .hAlignment()
-                    
+                HStack {
+                    Text("Hello, " + (user.name.fName)).font(.h1)
                 }
-                .hAlignment(.center)
+                .hAlignment()
                 
+                VStack {
+                    Text("Your available balance is")
+                        .font(.small)
+                        .foregroundColor(.text.medium)
+                        .hAlignment()
+                    Text("$"+String(user.total_balance))
+                        .font(.banner)
+                        .hAlignment()
+                }
+                .hAlignment()
+                
+            }
+            .hAlignment(.center)
+            
+            ScrollView {
                 VStack {
                     Text("Accounts")
                         .font(.h1)
@@ -68,15 +68,18 @@ struct MainHome: View {
                     Text("Recent Transactions")
                         .font(.h1)
                         .hAlignment()
+                    
+                    RecentTransactionsView(user: user)
+                        .hAlignment()
                 }
                 .hAlignment(.center)
-                
             }
-            .padding([.top, .bottom, .leading, .trailing], 15)
-            .bAlignment(.center)
-            .foregroundColor(.text.normal)
+            .scrollBounceBehavior(.basedOnSize)
+            
         }
+        .padding([.top, .bottom, .leading, .trailing], 15)
+        .bAlignment(.center)
+        .foregroundColor(.text.normal)
         .background(.background)
-        .scrollBounceBehavior(.basedOnSize)
     }
 }

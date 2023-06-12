@@ -7,6 +7,7 @@
 
 import Foundation
 
+typealias Institution = DecodableInstitution
 
 class DecodableInstitution: Decodable {
     var type, id, name, shortName, institutionType, country, serviceName, serviceType, status: String
@@ -20,5 +21,5 @@ struct DecodableLogoInstitution: Decodable {
 }
 
 struct DecodableLogoLinksInstitution: Decodable {
-    var square, full: String
+    var square, full: URL
 }

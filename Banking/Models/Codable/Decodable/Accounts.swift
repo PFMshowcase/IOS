@@ -11,11 +11,12 @@ import SwiftUI
 typealias Account = SingleDecodableAccount
 
 final class SingleDecodableAccount: Decodable, Identifiable {
-    let type, id, accountNo, connection, currency, lastUpdated, name, status: String
+    let type, id, accountNo, connection, currency, lastUpdated, name, status, institutionId: String
     let accountHolder, availableFunds, balance, creditLimit: String?
     var accClass: DecodableClassAccounts
     let accLinks: DecodableLinkAccounts
     var institution: DecodableInstitution?
+    var transactions: [Transaction]?
     
     var colour: (Color, Color)
     var logo: URL?
@@ -37,6 +38,7 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         self.creditLimit = try values.decode(String.self, forKey: .creditLimit)
         self.accClass = try values.decode(DecodableClassAccounts.self, forKey: .accClass)
         self.accLinks = try values.decode(DecodableLinkAccounts.self, forKey: .accLinks)
+        self.institutionId = try values.decode(String.self, forKey: .institutionId)
 
         let colour_options: [(Color, Color)] = [(.secondary.light, .text.black), (.primary.dark, .text.white), (.tertiary.base, .text.white)]
         self.colour = colour_options.randomElement() ?? (.primary.base, .text.black)
@@ -54,6 +56,7 @@ final class SingleDecodableAccount: Decodable, Identifiable {
         case accountHolder
         case availableFunds
         case balance
+        case institutionId = "institution"
         case creditLimit
         case accClass = "class"
         case accLinks = "links"
@@ -74,13 +77,6 @@ struct DecodableLinkAccounts: Decodable {
         case institution
         case transactions
         case account = "self"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.institution = try container.decode(String.self, forKey: .institution)
-        self.transactions = try container.decode(String.self, forKey: .transactions)
-        self.account = try container.decode(String.self, forKey: .account)
     }
 }
 

@@ -49,7 +49,6 @@ extension Auth {
 //    Sign in func to enable signing in with a pin and grabbing the
 //    values from keychain
     func signIn (pin: String) async throws -> Void {
-        let encoded_pin = pin.data(using: .utf8)!
         guard let last_logged_in = Auth.get_last_user() else { throw AuthError.generic() }
         
         let (_, defined_pin) = try manageKeychain(.read, attr_account: last_logged_in, attr_service: .pin)

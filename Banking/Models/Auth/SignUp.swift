@@ -8,7 +8,6 @@
 import Foundation
 import LocalAuthentication
 import FirebaseAuth
-import FirebaseFirestore
 
 
 extension Auth {
