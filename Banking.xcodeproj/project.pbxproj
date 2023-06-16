@@ -15,6 +15,10 @@
 		6E4C75B32A3415AA0016539A /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75B22A3415AA0016539A /* Transactions.swift */; };
 		6E4C75B52A34339D0016539A /* Enrich.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75B42A34339D0016539A /* Enrich.swift */; };
 		6E4C75B92A35AECB0016539A /* RecentTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75B82A35AECB0016539A /* RecentTransactionsView.swift */; };
+		6E4C75BB2A37F3880016539A /* DBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75BA2A37F3880016539A /* DBUser.swift */; };
+		6E4C75BE2A3800170016539A /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75BD2A3800170016539A /* Requests.swift */; };
+		6E4C75C02A3800670016539A /* Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75BF2A3800670016539A /* Name.swift */; };
+		6E4C75C22A3C1A330016539A /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75C12A3C1A330016539A /* UserUtils.swift */; };
 		6E553CBF2A302FA7007224F8 /* BasiqConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */; };
 		6E910DFD2A323F7500568F10 /* Institutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E910DFC2A323F7500568F10 /* Institutions.swift */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
@@ -117,6 +121,10 @@
 		6E4C75B22A3415AA0016539A /* Transactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
 		6E4C75B42A34339D0016539A /* Enrich.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enrich.swift; sourceTree = "<group>"; };
 		6E4C75B82A35AECB0016539A /* RecentTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTransactionsView.swift; sourceTree = "<group>"; };
+		6E4C75BA2A37F3880016539A /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
+		6E4C75BD2A3800170016539A /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		6E4C75BF2A3800670016539A /* Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Name.swift; sourceTree = "<group>"; };
+		6E4C75C12A3C1A330016539A /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
 		6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiqConsentView.swift; sourceTree = "<group>"; };
 		6E910DFC2A323F7500568F10 /* Institutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institutions.swift; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
@@ -225,7 +233,9 @@
 		6E3C75202A2EF09B008B6A55 /* Codable */ = {
 			isa = PBXGroup;
 			children = (
+				6E4C75BC2A37FFFD0016539A /* Encodable */,
 				6E3C75232A2EF7A6008B6A55 /* Decodable */,
+				6E4C75BF2A3800670016539A /* Name.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
@@ -237,6 +247,7 @@
 				6E910DFC2A323F7500568F10 /* Institutions.swift */,
 				6E4C75B22A3415AA0016539A /* Transactions.swift */,
 				6E4C75B42A34339D0016539A /* Enrich.swift */,
+				6E4C75BA2A37F3880016539A /* DBUser.swift */,
 			);
 			path = Decodable;
 			sourceTree = "<group>";
@@ -250,6 +261,14 @@
 				6E3EAEAF2A2F0C4300A6815F /* StandardElements.swift */,
 			);
 			path = SwiftUIUtils;
+			sourceTree = "<group>";
+		};
+		6E4C75BC2A37FFFD0016539A /* Encodable */ = {
+			isa = PBXGroup;
+			children = (
+				6E4C75BD2A3800170016539A /* Requests.swift */,
+			);
+			path = Encodable;
 			sourceTree = "<group>";
 		};
 		6EAD85962A0E04690064E595 /* Signing */ = {
@@ -268,6 +287,7 @@
 				6EAD85582A0CB5170064E595 /* AuthUtils.swift */,
 				6EED4B212A2AE34B00CA60FD /* BasiqUtils.swift */,
 				6EED4B262A2D757200CA60FD /* Errors.swift */,
+				6E4C75C12A3C1A330016539A /* UserUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -287,8 +307,8 @@
 			isa = PBXGroup;
 			children = (
 				6EC362AC29F7B5D100541040 /* AccountsView.swift */,
-				6EAD85942A0CFF7A0064E595 /* HomeView.swift */,
 				6E4C75B82A35AECB0016539A /* RecentTransactionsView.swift */,
+				6EAD85942A0CFF7A0064E595 /* HomeView.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
@@ -609,6 +629,7 @@
 				6EED4B222A2AE34B00CA60FD /* BasiqUtils.swift in Sources */,
 				6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */,
 				6E3C751F2A2EC742008B6A55 /* User.swift in Sources */,
+				6E4C75BE2A3800170016539A /* Requests.swift in Sources */,
 				6EC362B729F7D51B00541040 /* Auth.swift in Sources */,
 				6EF2991929E69EEA00D91255 /* BankingApp.swift in Sources */,
 				6E4C75B32A3415AA0016539A /* Transactions.swift in Sources */,
@@ -617,10 +638,13 @@
 				6EAD859B2A0E53C10064E595 /* TextUtils.swift in Sources */,
 				6E13E4EC2A115EF600A2552E /* CreateFlowView.swift in Sources */,
 				6E4C75B92A35AECB0016539A /* RecentTransactionsView.swift in Sources */,
+				6E4C75BB2A37F3880016539A /* DBUser.swift in Sources */,
 				6E553CBF2A302FA7007224F8 /* BasiqConsentView.swift in Sources */,
 				6E910DFD2A323F7500568F10 /* Institutions.swift in Sources */,
+				6E4C75C02A3800670016539A /* Name.swift in Sources */,
 				6EC362AD29F7B5D100541040 /* AccountsView.swift in Sources */,
 				6E3C75222A2EF0B2008B6A55 /* Accounts.swift in Sources */,
+				6E4C75C22A3C1A330016539A /* UserUtils.swift in Sources */,
 				6EED4B1E2A2ADA5F00CA60FD /* BasiqApi.swift in Sources */,
 				6EC362BB2A090D8000541040 /* FrameUtils.swift in Sources */,
 				6E4C75B52A34339D0016539A /* Enrich.swift in Sources */,

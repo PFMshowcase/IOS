@@ -8,22 +8,6 @@
 import Foundation
 import Alamofire
 
-
-@objc class BasiqUser: NSObject {
-    var id, token: String
-    var expiry: Date
-    
-    init?(dict: [String: Any]) {
-        guard let reqId = dict["basiq-uuid"] as? String,
-              let reqToken = dict["basiq-token"] as? String,
-              let reqExpiry = dict["basiq-token-expiry"] as? Int else { return nil }
-        
-        self.id = reqId
-        self.token = reqToken
-        self.expiry = Date(timeIntervalSince1970: Double(reqExpiry))
-    }
-}
-
 typealias apiCompletionHandler<T> = (T?, AFError?) -> Void
 
 struct Test: Decodable {

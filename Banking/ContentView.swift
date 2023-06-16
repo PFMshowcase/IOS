@@ -12,9 +12,11 @@ struct ContentView: View {
     
     var body: some View {
         if auth.user != nil {
-            HomeNavView(auth:auth)
+            HomeNavView()
+                .environmentObject(auth)
         } else {
-            SigningView(auth)
+            SigningView()
+                .environmentObject(auth)
         }
     }
 }

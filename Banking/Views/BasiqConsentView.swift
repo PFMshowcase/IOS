@@ -9,12 +9,11 @@ import SwiftUI
 import WebKit
 
 struct BasiqConsentView: View {
-    var user: User
-    @State var url: String
-    @State var open: Bool
+    @EnvironmentObject var user: User
+    @State var url: String = ""
+    @State var open: Bool = false
     
-    init(user: User) {
-        self.user = user
+    init() {
         let token: String = user.basiq_user.token
         self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
         self.open = true

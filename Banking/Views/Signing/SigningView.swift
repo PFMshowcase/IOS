@@ -10,11 +10,9 @@ import SwiftUI
 struct SigningView: View {
     @State var method: AuthMethods
     @State var test: String = ""
-    var auth: Auth
+    @EnvironmentObject var auth: Auth
     
-    init (_ auth_obj: Auth) {
-        auth = auth_obj
-        
+    init () {
         let sign_in_preferences = Auth.get_available_sign_in_method()
         
         if sign_in_preferences != nil {
@@ -48,10 +46,10 @@ struct SigningView: View {
 
 
 
-struct Signing_Preview: PreviewProvider {
-    
-    
-    static var previews: some View {
-        SigningView(try! Auth.getAuth()).previewLayout(.sizeThatFits)
-    }
-}
+//struct Signing_Preview: PreviewProvider {
+//
+//
+//    static var previews: some View {
+//        SigningView(try! Auth.getAuth()).previewLayout(.sizeThatFits)
+//    }
+//}

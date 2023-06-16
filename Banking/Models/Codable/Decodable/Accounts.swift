@@ -10,7 +10,7 @@ import SwiftUI
 
 typealias Account = SingleDecodableAccount
 
-final class SingleDecodableAccount: Decodable, Identifiable {
+struct SingleDecodableAccount: Decodable, Identifiable {
     let type, id, accountNo, connection, currency, lastUpdated, name, status, institutionId: String
     let accountHolder, availableFunds, balance, creditLimit: String?
     var accClass: DecodableClassAccounts

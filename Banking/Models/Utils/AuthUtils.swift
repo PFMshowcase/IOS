@@ -36,30 +36,6 @@ struct AuthSignInMethods: Codable, Equatable {
     }
 }
 
-@objc class UsersName: NSObject, ObservableObject {
-    @Published var fName: String
-    @Published var lName: String
-    @Published var display: String?
-    
-    var toDict: [String:Any] {
-        ["fName": fName, "lName": lName, "display": display as Any]
-    }
-    
-    init (fName: String, lName: String, display: String? = nil) {
-        self.fName = fName
-        self.lName = lName
-        self.display = display
-    }
-    
-    init? (dict: [String: Any]?) {
-        guard let _fName = dict?["fName"] as? String,
-              let _lName = dict?["lName"] as? String else { return nil }
-        
-        self.fName = _fName
-        self.lName = _lName
-        self.display = dict?["display"] as? String
-    }
-}
 
 /* =====================================================
  

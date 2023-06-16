@@ -15,12 +15,12 @@ import FirebaseAuth
    ===================================================== */
 
 
-class Auth: NSObject, ObservableObject {
+class Auth: ObservableObject {
 //    Singleton vars
     static var auth:Auth?
     
 //    Current User & observation
-    @Published @objc dynamic var user: User? = User.current
+    @Published var user: User? = User.current
     
     private var observation: NSKeyValueObservation?
     
@@ -32,30 +32,13 @@ class Auth: NSObject, ObservableObject {
         kSecClass as String: kSecClassGenericPassword
     ]
     
-    private override init () {
+    private init () {
         self.preview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-        
-        super.init()
     }
     
     func updateUser(_ user: User) {
         Task { @MainActor in
             self.user = user
-        }
-    }
-}
-
-/* =====================================================
- 
-    Creating an observer function which will call a
-    provided function when self.current changes
- 
-   ===================================================== */
-    
-extension Auth {
-    func subscribeToAuthUpdates (_ observer_func: @escaping (Auth)->Void) {
-        self.observation = observe(\.user, options: [.new]) { object, change in
-            observer_func(try! Auth.getAuth())
         }
     }
 }

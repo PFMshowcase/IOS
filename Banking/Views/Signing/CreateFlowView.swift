@@ -17,7 +17,7 @@ struct CreateFlowView: View {
     @State var screen = ""
     @State var pin: String = ""
     @State var enable_biometrics: Bool = false
-    @StateObject var name: UsersName = UsersName(fName: "", lName: "")
+    @StateObject var name: UsersName = UsersName(first: "", last: "")
     
     init (_ auth: Auth, _ switch_method: @escaping () -> Void) {
         self.switch_method = switch_method
@@ -35,6 +35,8 @@ struct CreateFlowView: View {
             } catch let error as AuthError {
                 print(type(of: error))
                 print(error.kind, error.error, error.message as Any)
+            } catch let error as DecodingError {
+                print(error)
             } catch {
                 print(error.localizedDescription)
             }
@@ -113,7 +115,7 @@ struct CreateUserInfo: View {
     
     var body: some View {
         VStack {
-            TextField("Name", text:$name.fName)
+            TextField("Name", text:$name.first)
                 .textFieldStyles()
             Button(action: {() in finish()}, label: { Text("Next").frame(maxWidth: .infinity) })
                 .buttonStyles(.secondary.light)

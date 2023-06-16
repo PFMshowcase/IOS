@@ -10,7 +10,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct AccountsView: View {
-    var user: User
+    @EnvironmentObject var user: User
     
     var body: some View {
         ScrollView(.horizontal) {

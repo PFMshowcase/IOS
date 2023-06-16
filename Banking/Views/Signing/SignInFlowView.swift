@@ -41,7 +41,7 @@ struct SignInFlow: View {
                 
             }
         }
-        default: Task { try await auth.signIn(username: self.email, password: self.password)}
+        default: Task { try await auth.signIn(username: self.email, password: self.password) }
         }
     }
     

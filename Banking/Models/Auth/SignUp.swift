@@ -8,6 +8,8 @@
 import Foundation
 import LocalAuthentication
 import FirebaseAuth
+import FirebaseSharedSwift
+import FirebaseFunctions
 
 
 extension Auth {
@@ -25,10 +27,10 @@ extension Auth {
         }
         
 //        Create Firebase and Basiq user
-        let basiq_user = try await create_fir_basiq_user(username: username, password: password, name: name)
+        let db_user = try await create_fir_basiq_user(username: username, password: password, name: name)
         
         try Auth.add_available_sign_in_methods(available_auth_methods)
-        try await User.create(basiq_user: basiq_user, name: name)
+        try await User.create(db_user)
         Auth.set_last_user(username)
     }
     
@@ -53,17 +55,12 @@ extension Auth {
         return available_auth_methods
     }
     
-    private func create_fir_basiq_user (username: String, password: String, name: UsersName) async throws -> BasiqUser {
+    private func create_fir_basiq_user (username: String, password: String, name: UsersName) async throws -> DBUser {
         try await FirebaseAuth.Auth.auth().createUser(withEmail: username, password: password)
         
-        let res = try await functions.httpsCallable("setupuser").call(["name": name.toDict, "email": username] as [String: Any])
-            
-
-        guard let resBasiqData = res.data as? [String: Any],
-              let basiq_user = BasiqUser(dict: resBasiqData)
-        else { throw AuthError.generic() }
-
-        return basiq_user
+        let decoder = FirebaseDataDecoder()
+        decoder.dateDecodingStrategy = .timestamp
+        return try await functions.httpsCallable("callable-setupuser", requestAs: EncodableDBUser.self, responseAs: DecodableDBUser.self, decoder: decoder).call(EncodableDBUser(name: name, email: username))
     }
     
     func enableBiometrics () async throws -> Bool {

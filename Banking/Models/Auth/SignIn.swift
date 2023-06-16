@@ -8,6 +8,8 @@
 import Foundation
 import LocalAuthentication
 import FirebaseAuth
+import FirebaseSharedSwift
+import FirebaseFunctions
 
 
 /* =====================================================
@@ -20,8 +22,6 @@ extension Auth {
 //    Base sign in func, takes username and password and signs into
 //    Firebase and retrieves the basiq user id
     func signIn (username: String, password: String) async throws -> Void {
-        var fir_err: Error?
-        
         guard self.user == nil else {
             throw AuthError.alreadySignedIn()
         }
@@ -30,19 +30,14 @@ extension Auth {
         
         try await FirebaseAuth.Auth.auth().signIn(withEmail: username, password: password)
                                 
-        let res = try await functions.httpsCallable("loginuser").call()
-        
-        guard let resBasiqData = res.data as? [String: Any],
-              let resBasiqUser = BasiqUser(dict: resBasiqData),
-              let resName = UsersName(dict: resBasiqData["name"] as? [String: Any]) else {
-            fir_err = AuthError.generic()
-            return
-        }
-        
-        if fir_err != nil { throw fir_err! }
-        
+//        Have to call with data of some sort when using decoder
+//        Not sure best way to do this
+        let decoder = FirebaseDataDecoder()
+        decoder.dateDecodingStrategy = .timestamp
+        let res = try await functions.httpsCallable("callable-loginuser", requestAs: String.self, responseAs: DecodableDBUser.self, decoder: decoder).call("")
+                
         print("username: "+username + " - password: " + password)
-        try await User.create(basiq_user: resBasiqUser, name:resName)
+        try await User.create(res)
         Auth.set_last_user(username)
     }
     

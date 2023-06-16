@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct HomeNavView: View {
-    @ObservedObject var auth: Auth
+    @StateObject var user: User = User.current!
     
     var body: some View {
-        switch auth.user!.accounts {
-        case nil: BasiqConsentView(user: auth.user!)
-        default: HomeView(user: auth.user!)
+        switch user.accounts {
+        case nil: BasiqConsentView().environmentObject(user)
+        default: HomeView().environmentObject(user)
         }
     }
         
@@ -21,13 +21,13 @@ struct HomeNavView: View {
 
 
 struct HomeView: View {
-    var user: User
+    @EnvironmentObject var user: User
         
     var body: some View {
         VStack (spacing:30) {
             VStack (spacing:30) {
                 HStack {
-                    Text("Hello, " + (user.name.fName)).font(.h1)
+                    Text("Hello, " + (user.name.first)).font(.h1)
                 }
                 .hAlignment()
                 
@@ -51,7 +51,7 @@ struct HomeView: View {
                         .font(.h1)
                         .hAlignment()
                     
-                    AccountsView(user: user)
+                    AccountsView() 
                         .hAlignment()
                 }
                 .hAlignment(.center)
@@ -69,7 +69,7 @@ struct HomeView: View {
                         .font(.h1)
                         .hAlignment()
                     
-                    RecentTransactionsView(user: user)
+                    RecentTransactionsView()
                         .hAlignment()
                 }
                 .hAlignment(.center)
@@ -81,5 +81,6 @@ struct HomeView: View {
         .bAlignment(.center)
         .foregroundColor(.text.normal)
         .background(.background)
+        
     }
 }

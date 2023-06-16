@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct RecentTransactionsView: View {
-    var user: User
+    @EnvironmentObject var user: User
         
     var body: some View {
         ScrollView(.vertical) {
