@@ -14,7 +14,6 @@ import FirebaseSharedSwift
 class User: ObservableObject {
     private(set) static var current: User? {
         didSet {
-            print("user set")
             Auth.auth?.updateUser(current!)
         }
     }
@@ -156,10 +155,3 @@ class User: ObservableObject {
         if formatted_accs.count > 0 { self.accounts = formatted_accs }
     }
 }
-
-enum GetTransactionType {
-    case all
-    case account
-    case single
-}
-
