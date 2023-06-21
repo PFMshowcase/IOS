@@ -39,7 +39,7 @@ struct SigningView: View {
         }
         .padding([.top, .bottom, .trailing, .leading], 15)
         .bAlignment(.center)
-        .foregroundColor(.text.normal)
+        .foregroundColor(CustomColour.text.normal)
         .background(.background)
     }
 }

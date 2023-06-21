@@ -13,12 +13,6 @@ struct BasiqConsentView: View {
     @State var url: String = ""
     @State var open: Bool = false
     
-    init() {
-        let token: String = user.basiq_user.token
-        self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
-        self.open = true
-    }
-    
     func finished() {
         Task {
             self.open = false
@@ -27,7 +21,15 @@ struct BasiqConsentView: View {
     }
     
     var body: some View {
-        if open == true { WebView(url: URL(string: self.url)!, finished:self.finished).scrollDisabled(true) }
+        ZStack {
+            if open == true { WebView(url: URL(string: self.url)!, finished:self.finished).scrollDisabled(true) }
+
+        }
+        .onAppear() {
+            let token: String = user.basiq_user.token
+            self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
+            self.open = true
+        }
     }
 }
 

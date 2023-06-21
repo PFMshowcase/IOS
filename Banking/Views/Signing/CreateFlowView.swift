@@ -82,7 +82,7 @@ struct CreateUserPass: View {
                 SecureField("Password", text: $password)
                     .textFieldStyles()
                 Button(action: {() in finish()}, label: { Text("Next").frame(maxWidth: .infinity) })
-                    .buttonStyles(.secondary.light)
+                    .buttonStyles(CustomColour.secondary.light)
             }
             .vAlignment(.top)
             .hAlignment(.center)
@@ -100,11 +100,11 @@ struct CreatePinAndBio: View {
             .keyboardType(.numberPad)
             .textFieldStyles()
         Toggle(isOn: $bio, label: { Text("Enable Biometrics").frame(maxWidth: .infinity, alignment: .center) })
-            .buttonStyles(.secondary.light)
+            .buttonStyles(CustomColour.secondary.light)
         Button(action: {() in finish()}, label: { Text("Skip").frame(maxWidth: .infinity, alignment: .center)} )
-            .buttonStyles(.secondary.light)
+            .buttonStyles(CustomColour.secondary.light)
         Button(action: {() in finish()}, label: { Text("Submit").frame(maxWidth: .infinity, alignment: .center) })
-            .buttonStyles(.secondary.light)
+            .buttonStyles(CustomColour.secondary.light)
     }
 }
 
@@ -118,7 +118,7 @@ struct CreateUserInfo: View {
             TextField("Name", text:$name.first)
                 .textFieldStyles()
             Button(action: {() in finish()}, label: { Text("Next").frame(maxWidth: .infinity) })
-                .buttonStyles(.secondary.light)
+                .buttonStyles(CustomColour.secondary.light)
         }
         .vAlignment(.top)
         .hAlignment(.center)

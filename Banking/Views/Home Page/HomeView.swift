@@ -34,9 +34,9 @@ struct HomeView: View {
                 VStack {
                     Text("Your available balance is")
                         .font(.small)
-                        .foregroundColor(.text.medium)
+                        .foregroundColor(CustomColour.text.medium)
                         .hAlignment()
-                    Text("$"+String(user.total_balance))
+                    Text(user.total_balance.currency())
                         .font(.banner)
                         .hAlignment()
                 }
@@ -61,6 +61,7 @@ struct HomeView: View {
                     Text("Insights")
                         .font(.h1)
                         .hAlignment()
+                    InsightsView()
                 }
                 .hAlignment(.center)
                 
@@ -79,8 +80,9 @@ struct HomeView: View {
         }
         .padding([.top, .bottom, .leading, .trailing], 15)
         .bAlignment(.center)
-        .foregroundColor(.text.normal)
+        .foregroundColor(CustomColour.text.normal)
         .background(.background)
+        .ignoresSafeArea(edges:.bottom)
         
     }
 }

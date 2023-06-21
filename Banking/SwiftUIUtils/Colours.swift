@@ -15,7 +15,7 @@ import SwiftUI
    ===================================================== */
 
 
-extension Color {
+struct CustomColour {
 //    Background
     static let bg = Color("bg")
     

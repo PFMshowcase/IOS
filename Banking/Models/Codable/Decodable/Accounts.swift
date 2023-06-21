@@ -40,8 +40,8 @@ struct SingleDecodableAccount: Decodable, Identifiable {
         self.accLinks = try values.decode(DecodableLinkAccounts.self, forKey: .accLinks)
         self.institutionId = try values.decode(String.self, forKey: .institutionId)
 
-        let colour_options: [(Color, Color)] = [(.secondary.light, .text.black), (.primary.dark, .text.white), (.tertiary.base, .text.white)]
-        self.colour = colour_options.randomElement() ?? (.primary.base, .text.black)
+        let colour_options: [(Color, Color)] = [(CustomColour.secondary.light, CustomColour.text.black), (CustomColour.primary.dark, CustomColour.text.white), (CustomColour.tertiary.base, CustomColour.text.white)]
+        self.colour = colour_options.randomElement() ?? (CustomColour.primary.base, CustomColour.text.black)
     }
     
     enum CodingKeys: String, CodingKey {

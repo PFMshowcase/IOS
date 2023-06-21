@@ -126,6 +126,7 @@ class User: ObservableObject {
     }
 
 //    TODO: Move to backend since it already performs similar operations
+    @MainActor
     func getAccounts(_ basiq: BasiqApi) async throws {
         let decoded_acc_data = try await basiq.req("users/{id}/accounts", method: .get, type: DecodableAccounts.self)
         let decoded_accs = decoded_acc_data.data

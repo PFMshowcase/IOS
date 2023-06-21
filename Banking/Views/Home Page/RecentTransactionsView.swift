@@ -25,7 +25,7 @@ struct RecentTransactionsView: View {
                             .font(.normal)
                         Text(transaction.transactionClass)
                             .font(.small)
-                            .foregroundColor(Color.text.medium)
+                            .foregroundColor(CustomColour.text.medium)
                     }
                     Text(transaction.amount)
                         .font(.normal)

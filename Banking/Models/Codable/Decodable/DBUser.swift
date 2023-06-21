@@ -52,11 +52,15 @@ struct DecodableBasiqTransactions: Decodable {
 }
 
 struct DecodableSummary: Decodable {
-    var monthlyIncome, monthlyExpenses, monthlyNet: Double
+    var monthToDateIncome, monthToDateExpenses, monthToDateSavings, monthAvgExpenses: Double
+    var monthAvgIncome, monthAvgSavings: Double?
     
     enum CodingKeys: String, CodingKey {
-        case monthlyIncome = "monthly_income"
-        case monthlyExpenses = "monthly_expenses"
-        case monthlyNet = "monthly_net"
+        case monthToDateIncome = "month_to_date_income"
+        case monthToDateExpenses = "month_to_date_expenses"
+        case monthToDateSavings = "month_to_date_savings"
+        case monthAvgIncome = "month_avg_income"
+        case monthAvgExpenses = "month_avg_expenses"
+        case monthAvgSavings = "month_avg_savings"
     }
 }

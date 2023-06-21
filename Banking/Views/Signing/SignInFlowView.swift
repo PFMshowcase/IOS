@@ -82,7 +82,7 @@ struct SignInWithPin: View {
                 .keyboardType(.numberPad)
                 .textFieldStyles()
             Button(action: {() in finish(.pin)}, label: { Text("Submit").frame(maxWidth: .infinity) })
-                .buttonStyles(.secondary.light)
+                .buttonStyles(CustomColour.secondary.light)
             Button("Login with email", action: {() in setLoginMethod(.password)})
                 .font(.small)
         }
@@ -106,7 +106,7 @@ struct SignInWithPassword: View {
             SecureField("Password", text: $password)
                 .textFieldStyles()
             Button(action: {() in finish(.password)}, label: { Text("Submit").frame(maxWidth: .infinity) })
-                .buttonStyles(.secondary.light)
+                .buttonStyles(CustomColour.secondary.light)
             Button("Login with pin", action: {() in setLoginMethod(.pin)})
                 .font(.small)
         }

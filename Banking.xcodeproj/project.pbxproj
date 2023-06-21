@@ -21,6 +21,7 @@
 		6E4C75C22A3C1A330016539A /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75C12A3C1A330016539A /* UserUtils.swift */; };
 		6E4C75C42A3C1EB50016539A /* SemiCircleChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4C75C32A3C1EB50016539A /* SemiCircleChart.swift */; };
 		6E553CBF2A302FA7007224F8 /* BasiqConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */; };
+		6E5C8AF22A40C70900BEAFF4 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5C8AF12A40C70900BEAFF4 /* InsightsView.swift */; };
 		6E910DFD2A323F7500568F10 /* Institutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E910DFC2A323F7500568F10 /* Institutions.swift */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
 		6EAD85612A0CD33A0064E595 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85602A0CD33A0064E595 /* SDWebImageSwiftUI */; };
@@ -128,6 +129,7 @@
 		6E4C75C12A3C1A330016539A /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
 		6E4C75C32A3C1EB50016539A /* SemiCircleChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemiCircleChart.swift; sourceTree = "<group>"; };
 		6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiqConsentView.swift; sourceTree = "<group>"; };
+		6E5C8AF12A40C70900BEAFF4 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 		6E910DFC2A323F7500568F10 /* Institutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institutions.swift; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -312,6 +314,8 @@
 				6EC362AC29F7B5D100541040 /* AccountsView.swift */,
 				6E4C75B82A35AECB0016539A /* RecentTransactionsView.swift */,
 				6EAD85942A0CFF7A0064E595 /* HomeView.swift */,
+				6E5C8AF12A40C70900BEAFF4 /* InsightsView.swift */,
+				6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
@@ -321,7 +325,6 @@
 			children = (
 				6EAD85962A0E04690064E595 /* Signing */,
 				6EC362AB29F7B5B400541040 /* Home Page */,
-				6E553CBE2A302FA7007224F8 /* BasiqConsentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,7 +332,6 @@
 		6EC362B129F7BBFA00541040 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6E3EAEAE2A2F0C1200A6815F /* SwiftUIUtils */,
 				6E3C75202A2EF09B008B6A55 /* Codable */,
 				6EAD85A32A0F5D6E0064E595 /* Auth */,
 				6EAD85992A0E53910064E595 /* Utils */,
@@ -397,12 +399,13 @@
 				6EC362C12A0926A300541040 /* Info.plist */,
 				6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */,
 				6EC362BE2A09247500541040 /* Fonts */,
+				6E3EAEAE2A2F0C1200A6815F /* SwiftUIUtils */,
 				6EC362AE29F7B7A800541040 /* Views */,
+				6EC362B129F7BBFA00541040 /* Models */,
 				6EF2991A29E69EEA00D91255 /* ContentView.swift */,
 				6EF2991829E69EEA00D91255 /* BankingApp.swift */,
 				6EF2991C29E69EEE00D91255 /* Assets.xcassets */,
 				6EF2991E29E69EEE00D91255 /* Preview Content */,
-				6EC362B129F7BBFA00541040 /* Models */,
 			);
 			path = Banking;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 				6E3C751F2A2EC742008B6A55 /* User.swift in Sources */,
 				6E4C75BE2A3800170016539A /* Requests.swift in Sources */,
 				6EC362B729F7D51B00541040 /* Auth.swift in Sources */,
+				6E5C8AF22A40C70900BEAFF4 /* InsightsView.swift in Sources */,
 				6EF2991929E69EEA00D91255 /* BankingApp.swift in Sources */,
 				6E4C75B32A3415AA0016539A /* Transactions.swift in Sources */,
 				6EED4B272A2D757200CA60FD /* Errors.swift in Sources */,
