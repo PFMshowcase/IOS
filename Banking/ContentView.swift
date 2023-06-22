@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         if auth.user != nil {
-            HomeNavView()
+            NavView()
                 .environmentObject(auth)
         } else {
             SigningView()

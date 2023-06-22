@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SemiCircleChart: View {
+struct ExpensesGraphView: View {
     var expenses: Double
     var avgExpenses: Double
     var maxExpenses: Double
@@ -33,7 +33,7 @@ struct SemiCircleChart: View {
     }
 }
 
-struct SemiCircle: Shape {
+private struct SemiCircle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let radius = min(rect.size.width, rect.size.height * 2) / 2
@@ -42,7 +42,7 @@ struct SemiCircle: Shape {
     }
 }
 
-struct TypicalSpending: View {
+private struct TypicalSpending: View {
     @State var rect: CGRect = CGRect()
     var max: Double
     var avg: Double
@@ -63,7 +63,7 @@ struct TypicalSpending: View {
     }
 }
 
-struct TypicalSpendingLine: Shape {
+private struct TypicalSpendingLine: Shape {
     var avg: Double
     var max: Double
     
@@ -80,7 +80,7 @@ struct TypicalSpendingLine: Shape {
     }
 }
 
-func calcPercentagePointOnSemi(_ val: Double, _ max: Double, _ rect: CGRect, line: Bool = false, distance: Double = 1) -> [CGPoint] {
+private func calcPercentagePointOnSemi(_ val: Double, _ max: Double, _ rect: CGRect, line: Bool = false, distance: Double = 1) -> [CGPoint] {
     let radius = min(rect.size.width, rect.size.height * 2) / 2
     let angle = (val / max) * 180
     

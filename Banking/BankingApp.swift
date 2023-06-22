@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 //        Initialize firebase
         FirebaseApp.configure()
-        functions.useEmulator(withHost: "localhost", port: 5001)
+//        Uncomment when running emulator
+//        functions.useEmulator(withHost: "localhost", port: 5001)
         
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
         
@@ -39,6 +40,8 @@ struct BankingApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .background(CustomColour.bg)
+                .foregroundStyle(CustomColour.text.normal)
         }
     }
 }

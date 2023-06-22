@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-struct HomeNavView: View {
-    @StateObject var user: User = User.current!
-    
-    var body: some View {
-        switch user.accounts {
-        case nil: BasiqConsentView().environmentObject(user)
-        default: HomeView().environmentObject(user)
-        }
-    }
-        
-}
-
 
 struct HomeView: View {
     @EnvironmentObject var user: User
@@ -51,7 +39,7 @@ struct HomeView: View {
                         .font(.h1)
                         .hAlignment()
                     
-                    AccountsView() 
+                    AccountSectionHomeView() 
                         .hAlignment()
                 }
                 .hAlignment(.center)
@@ -61,7 +49,7 @@ struct HomeView: View {
                     Text("Insights")
                         .font(.h1)
                         .hAlignment()
-                    InsightsView()
+                    InsightSectionHomeView()
                 }
                 .hAlignment(.center)
                 
@@ -70,7 +58,7 @@ struct HomeView: View {
                         .font(.h1)
                         .hAlignment()
                     
-                    RecentTransactionsView()
+                    TransactionSectionHomeView()
                         .hAlignment()
                 }
                 .hAlignment(.center)
@@ -80,9 +68,6 @@ struct HomeView: View {
         }
         .padding([.top, .bottom, .leading, .trailing], 15)
         .bAlignment(.center)
-        .foregroundColor(CustomColour.text.normal)
-        .background(.background)
         .ignoresSafeArea(edges:.bottom)
-        
     }
 }

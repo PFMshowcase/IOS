@@ -9,14 +9,14 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct AccountsView: View {
+struct AccountSectionHomeView: View {
     @EnvironmentObject var user: User
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack{
                 ForEach(user.accounts ?? []) {account in
-                    AccountWidget(account: account)
+                    AccountWidgetHomeView(account: account)
                 }
             }
             
@@ -24,7 +24,7 @@ struct AccountsView: View {
     }
 }
 
-struct AccountWidget: View {
+struct AccountWidgetHomeView: View {
     
     var account: SingleDecodableAccount
     
