@@ -9,7 +9,7 @@ import Foundation
 
 typealias Transaction = DecodableTransaction
 
-struct DecodableTransaction: Decodable, Identifiable {
+struct DecodableTransaction: Decodable, Identifiable, Equatable {
     var id, account, amount, balance, transactionClass, connection, description, direction, institution, status, transactionDate: String
     var transactionSubClass: DecodableSubClassTransaction?
     var links: DecodableLinkTransaction
@@ -32,6 +32,10 @@ struct DecodableTransaction: Decodable, Identifiable {
         case transactionDate
         case links
         case enrich
+    }
+    
+    static func ==(lhs: Transaction, rhs: Transaction) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

@@ -16,7 +16,11 @@ struct AccountSectionHomeView: View {
         ScrollView(.horizontal) {
             HStack{
                 ForEach(user.accounts ?? []) {account in
-                    AccountWidgetHomeView(account: account)
+                    NavigationLink {
+                        SingleAccountView(account: account)
+                    } label: {
+                        AccountWidgetHomeView(account: account)
+                    }
                 }
             }
             
@@ -27,6 +31,10 @@ struct AccountSectionHomeView: View {
 struct AccountWidgetHomeView: View {
     
     var account: SingleDecodableAccount
+    
+    var dummyChange: Double = {
+        Double.random(in: -999..<1000)
+    }()
     
     var body: some View {
 //        VStack to create the background and a frame to contain the widget
@@ -57,8 +65,8 @@ struct AccountWidgetHomeView: View {
                 
 //                Footer (percentage up last 30 days)
                 HStack {
-                    Text("up")
-                    Text("$200 last 30 days")
+                    Image(systemName: dummyChange > 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
+                    Text("\(dummyChange.currency(0)) last 30 days")
                 }
                 .font(.small)
                 .frame(alignment: .bottom)

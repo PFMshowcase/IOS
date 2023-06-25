@@ -76,6 +76,7 @@ class User: ObservableObject {
         let _ = try await functions.httpsCallable("callable-refreshuser").call()
     }
     
+//    MARK: Firestore listener for async updates
 //    TODO: Handle errors
     func addDbListener () throws {
         let userRef = db.collection("users").document(self.fir_user.uid)
@@ -154,5 +155,45 @@ class User: ObservableObject {
         }).rounded(2)
         
         if formatted_accs.count > 0 { self.accounts = formatted_accs }
+    }
+    
+//    MARK: Functions for filtering Transactions
+    
+    func getAllTransactionDates(transactions: [Transaction]? = nil) -> [Date] {
+        guard self.transactions != nil else {
+            return []
+        }
+        var dates: [Date] = []
+        
+        for transaction in self.transactions! {
+            if !dates.contains(transaction.postDate) {
+                dates.append(transaction.postDate)
+            }
+        }
+        
+        return dates
+    }
+    
+    func filterTransactions(date: Date, account: Account?, search: String) -> [Transaction] {
+//        Check if account is provided otherwise get all transactions
+        let unfiltered_transactions: [Transaction]? = account != nil ? account!.transactions : self.transactions
+        
+//        Unfiltered_transactions may be nil, return an empty array in this case
+        guard let unfiltered_transactions = unfiltered_transactions else {
+            return []
+        }
+                
+//        Filter the transactions with the provided date
+        let date_filtered_transactions = unfiltered_transactions.filter({ $0.postDate == date })
+                
+//        For some reason .contains returns false when an empty string is checked
+        guard search != "" else {
+            return date_filtered_transactions
+        }
+//        Filter the transactions with the provided string
+//        TODO: This needs to search more fields than just the description
+        let search_filtered_transactions = date_filtered_transactions.filter({ $0.description.contains(search) })
+                
+        return search_filtered_transactions
     }
 }

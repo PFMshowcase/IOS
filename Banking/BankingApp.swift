@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        Initialize firebase
         FirebaseApp.configure()
 //        Uncomment when running emulator
-//        functions.useEmulator(withHost: "localhost", port: 5001)
+        functions.useEmulator(withHost: "localhost", port: 5001)
         
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
         

@@ -12,62 +12,69 @@ struct HomeView: View {
     @EnvironmentObject var user: User
         
     var body: some View {
-        VStack (spacing:30) {
+        NavigationView {
             VStack (spacing:30) {
-                HStack {
-                    Text("Hello, " + (user.name.first)).font(.h1)
+                VStack (spacing:30) {
+                    HStack {
+                        Text("Hello, " + (user.name.first)).font(.h1)
+                    }
+                    .hAlignment()
+                    
+                    VStack {
+                        Text("Your available balance is")
+                            .font(.small)
+                            .foregroundColor(CustomColour.text.medium)
+                            .hAlignment()
+                        Text(user.total_balance.currency())
+                            .font(.banner)
+                            .hAlignment()
+                    }
+                    .hAlignment()
+                    
                 }
-                .hAlignment()
+                .hAlignment(.center)
                 
-                VStack {
-                    Text("Your available balance is")
-                        .font(.small)
-                        .foregroundColor(CustomColour.text.medium)
-                        .hAlignment()
-                    Text(user.total_balance.currency())
-                        .font(.banner)
-                        .hAlignment()
+                ScrollView {
+                    VStack {
+                        Text("Accounts")
+                            .font(.h1)
+                            .hAlignment()
+                        
+                        AccountSectionHomeView() 
+                            .hAlignment()
+                            .padding(.vertical, 10)
+                    }
+                    .hAlignment(.center)
+                    
+                    
+                    VStack {
+                        Text("Insights")
+                            .font(.h1)
+                            .hAlignment()
+                        InsightSectionHomeView()
+                            .padding(.top, 25)
+                            .padding(.bottom, 10)
+                    }
+                    .hAlignment(.center)
+                    
+                    VStack {
+                        Text("Recent Transactions")
+                            .font(.h1)
+                            .hAlignment()
+                        
+                        TransactionSectionHomeView()
+                            .hAlignment()
+                            .padding(.vertical, 10)
+                        
+                    }
+                    .hAlignment(.center)
                 }
-                .hAlignment()
+                .scrollBounceBehavior(.basedOnSize)
                 
             }
-            .hAlignment(.center)
-            
-            ScrollView {
-                VStack {
-                    Text("Accounts")
-                        .font(.h1)
-                        .hAlignment()
-                    
-                    AccountSectionHomeView() 
-                        .hAlignment()
-                }
-                .hAlignment(.center)
-                
-                
-                VStack {
-                    Text("Insights")
-                        .font(.h1)
-                        .hAlignment()
-                    InsightSectionHomeView()
-                }
-                .hAlignment(.center)
-                
-                VStack {
-                    Text("Recent Transactions")
-                        .font(.h1)
-                        .hAlignment()
-                    
-                    TransactionSectionHomeView()
-                        .hAlignment()
-                }
-                .hAlignment(.center)
-            }
-            .scrollBounceBehavior(.basedOnSize)
-            
+            .padding(.all, 15)
+            .bAlignment(.center)
+            .ignoresSafeArea(edges:.bottom)
         }
-        .padding([.top, .bottom, .leading, .trailing], 15)
-        .bAlignment(.center)
-        .ignoresSafeArea(edges:.bottom)
     }
 }

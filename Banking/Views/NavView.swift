@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-struct NavView: View {
-    @StateObject var user: User = User.current!
-    
-    var body: some View {
-        switch user.accounts {
-        case nil: BasiqConsentView().environmentObject(user)
-        default: TabBarView().environmentObject(user)
-        }
-    }
-}
-
-
 struct TabBarView: View {
     @State var selectedTab = 0
     
@@ -31,7 +19,7 @@ struct TabBarView: View {
                     .tag(1)
                 TestAcc()
                     .tag(2)
-                TestAcc()
+                InsightsView()
                     .tag(3)
             }
             
