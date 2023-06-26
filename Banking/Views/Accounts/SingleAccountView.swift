@@ -77,6 +77,7 @@ struct SingleAccountView: View {
         }
         .padding(.all, 15)
         .padding(.top, 30)
+        .foregroundColor(CustomColour.text.normal)
         .ignoresSafeArea(edges:.bottom)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)

@@ -13,12 +13,12 @@ struct TransactionListItem: View {
     
     var body: some View {
         HStack(alignment: .center) {
-                WebImage(url: URL(string: "https://enrich-enrichmerchantslogobucket-6or17iuhdvs9.s3-ap-southeast-2.amazonaws.com/7_eleven-thumb.svg"))
+            Image(systemName: transaction.categoryIcon)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 35, height: 35, alignment: .center)
+                    .frame(width: 30, height: 30, alignment: .center)
                     .padding(.trailing)
-            Text(transaction.description)
+            Text(transaction.description.count >= 20 ? String(transaction.description[..<transaction.description.index(transaction.description.startIndex, offsetBy: 20)]) + "..." : transaction.description)
                 .font(.normal)
             ZStack(alignment: .trailing) {
                 if transaction.direction == "debit" {

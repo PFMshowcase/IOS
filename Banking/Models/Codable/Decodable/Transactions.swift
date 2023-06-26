@@ -10,8 +10,8 @@ import Foundation
 typealias Transaction = DecodableTransaction
 
 struct DecodableTransaction: Decodable, Identifiable, Equatable {
-    var id, account, amount, balance, transactionClass, connection, description, direction, institution, status, transactionDate: String
-    var transactionSubClass: DecodableSubClassTransaction?
+    var id, account, amount, balance, transactionClass, connection, description, direction, institution, status, transactionDate, categoryIcon: String
+    var categoryInfo: DecodableCategoryInfoTransaction
     var links: DecodableLinkTransaction
     var enrich: DecodableEnrich?
     var postDate: Date
@@ -28,7 +28,8 @@ struct DecodableTransaction: Decodable, Identifiable, Equatable {
         case institution
         case postDate
         case status
-        case transactionSubClass = "subClass"
+        case categoryInfo
+        case categoryIcon
         case transactionDate
         case links
         case enrich
@@ -39,7 +40,7 @@ struct DecodableTransaction: Decodable, Identifiable, Equatable {
     }
 }
 
-struct DecodableSubClassTransaction: Decodable { var code, title: String? }
+struct DecodableCategoryInfoTransaction: Decodable { var code, description, iosIcon: String; var unknown: Bool }
 
 struct DecodableLinkTransaction: Decodable {
     var account, institution, transaction: URL

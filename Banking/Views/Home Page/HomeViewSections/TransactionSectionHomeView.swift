@@ -17,5 +17,8 @@ struct TransactionSectionHomeView: View {
                 TransactionListItem(transaction: transaction)
             }
         }
+        .padding(.bottom, 100)
     }
 }
+
+

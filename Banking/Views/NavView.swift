@@ -13,14 +13,12 @@ struct TabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                HomeView()
-                    .tag(0)
                 TestAcc()
                     .tag(1)
-                TestAcc()
-                    .tag(2)
+                HomeView()
+                    .tag(0)
                 InsightsView()
-                    .tag(3)
+                    .tag(2)
             }
             
             ZStack {
@@ -49,12 +47,12 @@ struct TabBarView: View {
             Image(systemName: imageName)
                 .resizable()
                 .renderingMode(.template)
-                .foregroundColor(isActive ? .black : .gray)
+                .foregroundColor(isActive ? CustomColour.text.normal : CustomColour.text.gray)
                 .frame(width: 20, height: 20)
             if isActive {
                 Text(title)
                     .font(.normal)
-                    .foregroundColor(isActive ? .black : .gray)
+                    .foregroundColor(isActive ? CustomColour.text.normal : CustomColour.text.gray)
             }
             Spacer()
         }
@@ -65,7 +63,6 @@ struct TabBarView: View {
 
     enum TabbedItems: Int, CaseIterable{
         case home = 0
-        case accounts
         case transactions
         case insights
         
@@ -73,8 +70,6 @@ struct TabBarView: View {
             switch self {
             case .home:
                 return "Home"
-            case .accounts:
-                return "Accounts"
             case .transactions:
                 return "Transactions"
             case .insights:
@@ -86,8 +81,6 @@ struct TabBarView: View {
             switch self {
             case .home:
                 return "house"
-            case .accounts:
-                return "building.columns.fill"
             case .transactions:
                 return "newspaper"
             case .insights:
