@@ -91,7 +91,7 @@ struct SingleAccountView: View {
                         .bAlignment()
                         .contentShape(Rectangle().size(CGSize(width: 15, height: 15)))
                 }
-                .background(CustomColour.orange)
+//                .background(CustomColour.orange)
                 .padding(.top, 50)
             }
             ToolbarItem(placement: .principal) {
