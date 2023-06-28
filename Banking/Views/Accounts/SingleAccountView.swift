@@ -99,7 +99,7 @@ struct SingleAccountView: View {
             }
         }
         .gesture(DragGesture().updating($dragOffset, body: { (value, state, transaction) in
-            if(value.startLocation.x < 20 && value.translation.width > 100) {
+            if(value.startLocation.x < 50 && value.translation.width > 100) {
                 self.mode.wrappedValue.dismiss()
             }
         }))

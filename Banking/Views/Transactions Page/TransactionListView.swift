@@ -21,10 +21,10 @@ struct TransactionListView: View {
     
     var body: some View {
         LazyVStack {
-            ForEach(user.getAllTransactionDates(transactions: account?.transactions), id: \.self) { date in
-                Section(header: Text(date.formatted()).font(.h2).hAlignment()) {
+            ForEach(user.getAllTransactionDates(transactions: account?.transactions), id: \.self) { (date: Date) in
+                Section(header: Text(date.formatDay()).font(.h2).hAlignment()) {
                     let transactionList = transactions(date)
-                    ForEach(Array(zip(transactionList.indices, transactionList)), id: \.0) { index, transaction in
+                    ForEach(Array(zip(transactionList.indices, transactionList)), id: \.1.id) { index, transaction in
                         VStack(spacing: 0) {
                             TransactionListItem(transaction: transaction)
                             

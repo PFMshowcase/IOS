@@ -159,18 +159,31 @@ class User: ObservableObject {
     
 //    MARK: Functions for filtering Transactions
     
-    func getAllTransactionDates(transactions: [Transaction]? = nil) -> [Date] {
-        guard self.transactions != nil else {
+    func getAllTransactionDates(transactions: [Transaction]? = nil, sortBy: TransactionSortingOptions = .dateDescending) -> [Date] {
+        var use_transactions = transactions
+        
+        if use_transactions == nil { use_transactions = self.transactions }
+        
+        guard let use_transactions else {
             return []
         }
+        
         var dates: [Date] = []
         
-        for transaction in self.transactions! {
+        for transaction in use_transactions {
             if !dates.contains(transaction.postDate) {
                 dates.append(transaction.postDate)
             }
         }
         
+        dates.sort(by: { first, second -> Bool in
+            if sortBy == .dateAscending {
+                return first < second
+            }
+            
+            return first > second
+        })
+                
         return dates
     }
     

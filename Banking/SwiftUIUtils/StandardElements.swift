@@ -57,10 +57,51 @@ func rectReader(_ binding: Binding<CGRect>, _ space: CoordinateSpace = .global) 
     }
 }
 
+private var ordinalFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .ordinal
+    return formatter
+}()
+
 extension Date {
     func monthName() -> String {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMMM")
         return df.string(from: self)
     }
+    
+    func monthDay() -> String {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("dd")
+        let num = Int(df.string(from: self))
+        
+        guard let num else { return df.string(from: self) }
+        
+        return ordinalFormatter.string(from: num as NSNumber) ?? df.string(from: self)
+    }
+    
+    func formatDay() -> String {
+//        Check how long ago the date is from now
+        let calendar = Calendar.current
+        let df = DateFormatter()
+        
+        let components = calendar.dateComponents([.day], from: calendar.startOfDay(for: Date.now), to: calendar.startOfDay(for: self))
+        
+//        If it is today or yesterday, use a relative day (eg: Yesterday)
+        if components.day != nil && components.day! > -2 {
+            let relative_df = RelativeDateTimeFormatter()
+            relative_df.dateTimeStyle = .named
+            relative_df.unitsStyle = .spellOut
+
+            return relative_df.localizedString(from: components).capitalized
+//        If it is within the last week then get the relative day (eg: Wednesday)
+        } else if components.day != nil && components.day! > -7 {
+            df.setLocalizedDateFormatFromTemplate("EEEE")
+            return df.string(from: self)
+        }
+        
+//        Else return the date formatted as MMMM dd (eg: January 1st)
+        return "\(monthName()) \(monthDay())"
+    }
 }
+

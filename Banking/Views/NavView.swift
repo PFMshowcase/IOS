@@ -13,7 +13,7 @@ struct TabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                TestAcc()
+                TransactionsView()
                     .tag(1)
                 HomeView()
                     .tag(0)
@@ -62,9 +62,9 @@ struct TabBarView: View {
     }
 
     enum TabbedItems: Int, CaseIterable{
+        case transactions = 1
         case home = 0
-        case transactions
-        case insights
+        case insights = 2
         
         var title: String{
             switch self {
