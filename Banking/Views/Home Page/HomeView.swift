@@ -75,6 +75,7 @@ struct HomeView: View {
             .padding(.all, 15)
             .bAlignment(.center)
             .ignoresSafeArea(edges:.bottom)
+            .background(CustomColour.bg)
         }
     }
 }

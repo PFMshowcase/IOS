@@ -26,5 +26,6 @@ struct TransactionsView: View {
         .padding(.all, 15)
         .foregroundColor(CustomColour.text.normal)
         .ignoresSafeArea(edges:.bottom)
+        .background(CustomColour.bg)
     }
 }

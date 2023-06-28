@@ -79,6 +79,7 @@ struct SingleAccountView: View {
         .padding(.top, 30)
         .foregroundColor(CustomColour.text.normal)
         .ignoresSafeArea(edges:.bottom)
+        .background(CustomColour.bg)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -87,9 +88,10 @@ struct SingleAccountView: View {
                     self.mode.wrappedValue.dismiss()
                 } label: {
                     Label("Back", systemImage: "chevron.backward")
-                        .padding(5)
+                        .bAlignment()
+                        .contentShape(Rectangle().size(CGSize(width: 15, height: 15)))
                 }
-                .contentShape(Rectangle())
+                .background(CustomColour.orange)
                 .padding(.top, 50)
             }
             ToolbarItem(placement: .principal) {
