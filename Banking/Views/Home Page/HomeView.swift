@@ -69,7 +69,7 @@ struct HomeView: View {
                     }
                     .hAlignment(.center)
                 }
-                .scrollBounceBehavior(.basedOnSize)
+//                .scrollBounceBehavior(.basedOnSize)
                 
             }
             .padding(.all, 15)

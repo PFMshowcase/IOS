@@ -22,9 +22,14 @@ struct BasiqConsentView: View {
     
     var body: some View {
         ZStack {
-            if open == true { WebView(url: URL(string: self.url)!, finished:self.finished).scrollDisabled(true) }
+            if open == true {
+                WebView(url: URL(string: self.url)!, finished:self.finished)
+                    .scrollDisabled(true)
+                    .bAlignment()
+            }
 
         }
+        .ignoresSafeArea()
         .onAppear() {
             let token: String = user.basiq_user.token
             self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
@@ -51,6 +56,8 @@ struct WebView: UIViewRepresentable {
         
         let webKit = WKWebView(frame: .zero, configuration: conf)
         webKit.navigationDelegate = context.coordinator
+        webKit.scrollView.contentInsetAdjustmentBehavior = .never
+        webKit.scrollView.contentInset = .zero
         return webKit
     }
     
