@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WebKit
 
 struct BasiqConsentView: View {
     @EnvironmentObject var user: User
@@ -39,54 +38,3 @@ struct BasiqConsentView: View {
 }
 
 
-struct WebView: UIViewRepresentable {
-    var url: URL
-    var finished: () -> Void
-    let source_script: String = "var meta = document.createElement('meta');" +
-        "meta.name = 'viewport';" +
-        "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
-        "var head = document.getElementsByTagName('head')[0];" +
-        "head.appendChild(meta);"
-    
-    func makeUIView(context: Context) -> WKWebView {
-        let script = WKUserScript(source: source_script, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        let conf = WKWebViewConfiguration()
-        conf.userContentController = WKUserContentController()
-        conf.userContentController.addUserScript(script)
-        
-        let webKit = WKWebView(frame: .zero, configuration: conf)
-        webKit.navigationDelegate = context.coordinator
-        webKit.scrollView.contentInsetAdjustmentBehavior = .never
-        webKit.scrollView.contentInset = .zero
-        return webKit
-    }
-    
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        let request = URLRequest(url: url)
-        webView.load(request)
-    }
-    
-    func makeCoordinator() -> WebViewCoordinator {
-        WebViewCoordinator(self)
-    }
-    
-    class WebViewCoordinator: NSObject, WKNavigationDelegate {
-        var parent: WebView
-        
-        init(_ parent: WebView) {
-            self.parent = parent
-        }
-        
-        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            let urlToMatch = "finished-notexistingurl.com"
-            if (navigationAction.navigationType == .other) {
-                if let redirectedUrl = navigationAction.request.url, redirectedUrl.host == urlToMatch{
-                    parent.finished()
-                    decisionHandler(.cancel)
-                    return
-                }
-            }
-            decisionHandler(.allow)
-        }
-    }
-}

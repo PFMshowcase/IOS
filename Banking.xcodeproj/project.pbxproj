@@ -30,6 +30,10 @@
 		6E5C8B042A4534C200BEAFF4 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5C8B032A4534C100BEAFF4 /* TransactionListView.swift */; };
 		6E5C8B062A4539FF00BEAFF4 /* TransactionListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5C8B052A4539FE00BEAFF4 /* TransactionListItem.swift */; };
 		6E910DFD2A323F7500568F10 /* Institutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E910DFC2A323F7500568F10 /* Institutions.swift */; };
+		6E9AC1FA2A4E8C8C00A8EA6A /* WebViewPadding.js in Resources */ = {isa = PBXBuildFile; fileRef = 6E9AC1F92A4E8C8C00A8EA6A /* WebViewPadding.js */; };
+		6E9AC1FC2A4EF7A000A8EA6A /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FB2A4EF7A000A8EA6A /* WebView.swift */; };
+		6E9AC1FE2A4EF7FB00A8EA6A /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FD2A4EF7FB00A8EA6A /* Files.swift */; };
+		6E9AC2002A4FBA3700A8EA6A /* ForwardLogsToConsole.js in Resources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
 		6EAD85612A0CD33A0064E595 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85602A0CD33A0064E595 /* SDWebImageSwiftUI */; };
 		6EAD85642A0CD38E0064E595 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85632A0CD38E0064E595 /* SDWebImageSVGCoder */; };
@@ -145,6 +149,10 @@
 		6E5C8B032A4534C100BEAFF4 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
 		6E5C8B052A4539FE00BEAFF4 /* TransactionListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListItem.swift; sourceTree = "<group>"; };
 		6E910DFC2A323F7500568F10 /* Institutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institutions.swift; sourceTree = "<group>"; };
+		6E9AC1F92A4E8C8C00A8EA6A /* WebViewPadding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WebViewPadding.js; sourceTree = "<group>"; };
+		6E9AC1FB2A4EF7A000A8EA6A /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		6E9AC1FD2A4EF7FB00A8EA6A /* Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Files.swift; sourceTree = "<group>"; };
+		6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ForwardLogsToConsole.js; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EAD85942A0CFF7A0064E595 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -277,6 +285,7 @@
 				6EC362BA2A090D8000541040 /* FrameUtils.swift */,
 				6EAD859A2A0E53C10064E595 /* TextUtils.swift */,
 				6E3EAEAF2A2F0C4300A6815F /* StandardElements.swift */,
+				6E9AC1FB2A4EF7A000A8EA6A /* WebView.swift */,
 			);
 			path = SwiftUIUtils;
 			sourceTree = "<group>";
@@ -327,6 +336,15 @@
 			path = "Transactions Page";
 			sourceTree = "<group>";
 		};
+		6E9AC1F82A4E8C2500A8EA6A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6E9AC1F92A4E8C8C00A8EA6A /* WebViewPadding.js */,
+				6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		6EAD85962A0E04690064E595 /* Signing */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,6 +362,7 @@
 				6EED4B212A2AE34B00CA60FD /* BasiqUtils.swift */,
 				6EED4B262A2D757200CA60FD /* Errors.swift */,
 				6E4C75C12A3C1A330016539A /* UserUtils.swift */,
+				6E9AC1FD2A4EF7FB00A8EA6A /* Files.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -455,6 +474,7 @@
 				6EC362BE2A09247500541040 /* Fonts */,
 				6E3EAEAE2A2F0C1200A6815F /* SwiftUIUtils */,
 				6EC362AE29F7B7A800541040 /* Views */,
+				6E9AC1F82A4E8C2500A8EA6A /* Utils */,
 				6EC362B129F7BBFA00541040 /* Models */,
 				6EF2991829E69EEA00D91255 /* BankingApp.swift */,
 				6EF2991C29E69EEE00D91255 /* Assets.xcassets */,
@@ -638,6 +658,7 @@
 				6EC362E52A09F2B800541040 /* Cabin_Condensed-Italic.ttf in Resources */,
 				6EAD85662A0CFA710064E595 /* GoogleService-Info.plist in Resources */,
 				6EC362E42A09F2B800541040 /* Cabin_Condensed-SemiBoldItalic.ttf in Resources */,
+				6E9AC2002A4FBA3700A8EA6A /* ForwardLogsToConsole.js in Resources */,
 				6EC362EA2A09F2B800541040 /* Cabin_SemiCondensed-SemiBoldItalic.ttf in Resources */,
 				6EF2991D29E69EEE00D91255 /* Assets.xcassets in Resources */,
 				6EC362E72A09F2B800541040 /* Cabin_Condensed-SemiBold.ttf in Resources */,
@@ -649,6 +670,7 @@
 				6EC362EF2A09F2B800541040 /* Cabin-SemiBoldItalic.ttf in Resources */,
 				6EC362DD2A09F2B800541040 /* Cabin_SemiCondensed-Bold.ttf in Resources */,
 				6EC362E32A09F2B800541040 /* Cabin_Condensed-MediumItalic.ttf in Resources */,
+				6E9AC1FA2A4E8C8C00A8EA6A /* WebViewPadding.js in Resources */,
 				6EC362DF2A09F2B800541040 /* Cabin_SemiCondensed-SemiBold.ttf in Resources */,
 				6EC362E12A09F2B800541040 /* Cabin-Regular.ttf in Resources */,
 				6EC362DE2A09F2B800541040 /* Cabin_SemiCondensed-Regular.ttf in Resources */,
@@ -699,6 +721,7 @@
 				6E5C8AF42A44065E00BEAFF4 /* NavView.swift in Sources */,
 				6EED4B272A2D757200CA60FD /* Errors.swift in Sources */,
 				6E5C8AFB2A44A60E00BEAFF4 /* SingleAccountView.swift in Sources */,
+				6E9AC1FE2A4EF7FB00A8EA6A /* Files.swift in Sources */,
 				6EAD85A52A0F5DF00064E595 /* SignIn.swift in Sources */,
 				6EAD859B2A0E53C10064E595 /* TextUtils.swift in Sources */,
 				6E5C8B062A4539FF00BEAFF4 /* TransactionListItem.swift in Sources */,
@@ -711,6 +734,7 @@
 				6E4C75C02A3800670016539A /* Name.swift in Sources */,
 				6E5C8B022A44A65B00BEAFF4 /* TransactionsView.swift in Sources */,
 				6EC362AD29F7B5D100541040 /* AccountSectionHomeView.swift in Sources */,
+				6E9AC1FC2A4EF7A000A8EA6A /* WebView.swift in Sources */,
 				6E3C75222A2EF0B2008B6A55 /* Accounts.swift in Sources */,
 				6E4C75C22A3C1A330016539A /* UserUtils.swift in Sources */,
 				6EED4B1E2A2ADA5F00CA60FD /* BasiqApi.swift in Sources */,
