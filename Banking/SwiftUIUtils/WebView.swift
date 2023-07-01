@@ -9,6 +9,12 @@ import Foundation
 import WebKit
 import SwiftUI
 
+class LoggingMessageHandler: NSObject, WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print(message.body)
+    }
+}
+
 struct WebView: UIViewRepresentable {
     var url: URL
     var finished: () -> Void
@@ -16,6 +22,8 @@ struct WebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let conf = WKWebViewConfiguration()
         conf.userContentController = WKUserContentController()
+        conf.userContentController.add(LoggingMessageHandler(), name: "logging")
+        conf.userContentController.addUserScript(WKUserScript(source: getTextFile("ForwardLogsToConsole"), injectionTime: .atDocumentStart, forMainFrameOnly: true))
         
         let webKit = WKWebView(frame: .zero, configuration: conf)
         webKit.navigationDelegate = context.coordinator

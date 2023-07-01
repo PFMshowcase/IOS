@@ -9,7 +9,8 @@ import SwiftUI
 
 struct BasiqConsentView: View {
     @EnvironmentObject var user: User
-    @State var url: String = ""
+//    Lol
+    @State var url: URL = URL(string: "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjHvuih1uz_AhX4jVYBHfuQD7UQyCl6BAglEAM&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449")!
     @State var open: Bool = false
     
     func finished() {
@@ -22,7 +23,7 @@ struct BasiqConsentView: View {
     var body: some View {
         ZStack {
             if open == true {
-                WebView(url: URL(string: self.url)!, finished:self.finished)
+                WebView(url: self.url, finished:self.finished)
                     .scrollDisabled(true)
                     .bAlignment()
             }
@@ -30,9 +31,13 @@ struct BasiqConsentView: View {
         }
         .ignoresSafeArea()
         .onAppear() {
-            let token: String = user.basiq_user.token
-            self.url = "https://consent.basiq.io/home?token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://google.com"
-            self.open = true
+            do {
+                try self.url = BasiqApi.api!.getURL(url: "https://consent.basiq.io/home?&token={token}&institutionId=AU00000")
+                self.open = true
+            } catch {
+//                TODO: Toast error?
+                print(error.localizedDescription)
+            }
         }
     }
 }

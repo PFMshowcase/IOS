@@ -3,12 +3,11 @@
 
 javascript:(function() {
     const view = document.getElementById('main_wrapper');
-    const windowHeight = window.innerHeight;
     const padding = 100;
     
 //    Giving padding to the top of the view
-    view.style.setProperty('padding-top', '100px');
-    view.style.setProperty('padding-bottom', '100px');
+    view.style.setProperty('padding-top', '50px');
+    view.style.setProperty('padding-bottom', '50px');
     
     view.style.setProperty('position', 'relative')
     
@@ -24,6 +23,6 @@ javascript:(function() {
         }
     }
     
-//    Call the above function setting the children to have `padding: inherit`
-    give_absolute_child_styles(view.children, "padding-bottom", '100px')
+//    Call the above function setting the children to have `padding-bottom: 50px`
+    give_absolute_child_styles(view.children, "padding-bottom", '50px')
 })()

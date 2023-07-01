@@ -28,7 +28,19 @@ class BasiqApi {
         return BasiqApi.api!
     }
     
-//    Callback
+    func getURL(url full_url: String) throws -> URL {
+        let formatted_url = full_url
+            .replacingOccurrences(of: "{id}", with: self.basiq_data.id)
+            .replacingOccurrences(of: "{token}", with: self.basiq_data.token)
+        
+        guard let url = URL(string: formatted_url) else {
+            throw BasiqError("input string not valid url")
+        }
+        
+        return url
+    }
+    
+//    Completion Handlers
     func req<ResType>(_ path: String, method: BasiqHTTPMethods.get = .get, completionHandler: @escaping apiCompletionHandler<ResType>) throws where ResType: Decodable {
         let req = AF.request(try self.createURL(path), method: .get, headers: self.headers)
         
@@ -90,14 +102,13 @@ class BasiqApi {
     }
     
     private func getResponse<ResType>(_ req: DataRequest, _ type: ResType.Type) async throws -> ResType where ResType: Decodable {
-        let req = req.validate()
 
         if type == String.self {
-            return try await req.serializingString().value as! ResType
+            return try await req.validate().serializingString().value as! ResType
         } else if type == Data.self {
-            return try await req.serializingData().value as! ResType
+            return try await req.validate().serializingData().value as! ResType
         } else {
-            return try await req.serializingDecodable(type).value
+            return try await req.validate().serializingDecodable(type).value
         }
     }
 }

@@ -22,6 +22,8 @@ class User: ObservableObject {
     private var db: Firestore
     
     private var decoded_institutions: [String: DecodableInstitution] = [:]
+    private var basiq_user: BasiqUser
+    private var basiq_consents: DecodableConsents?
     
     @Published var refreshing: Bool
     @Published var lastRefresh: Date?
@@ -29,8 +31,9 @@ class User: ObservableObject {
     @Published var name: UsersName
     @Published var total_balance: Double
     @Published var transactions: [Transaction]?
-    @Published var basiq_user: BasiqUser
     @Published var summary: Summary?
+    @Published var connections_needed: Bool = false
+    @Published var consent_needed: Bool = false
 
     @Published var accounts: [Account]? {
         didSet {
@@ -65,6 +68,9 @@ class User: ObservableObject {
         self.refreshing = user.refreshing
         self.lastRefresh = user.lastRefresh
         
+        try await checkConnections()
+        try await checkConsent()
+
         try await self.getAccounts(basiq)
         try self.addDbListener()
     }
@@ -74,11 +80,28 @@ class User: ObservableObject {
     func refreshBasiq() async throws {
         try await getAccounts(BasiqApi.api!)
         let _ = try await functions.httpsCallable("callable-refreshuser").call()
+        try await checkConnections()
+        try await checkConsent()
+        
+        User.current = self
+    }
+    
+    private func checkConsent() async throws {
+        let basiq_res = try await BasiqApi.api!.req("users/{id}/consents", method: .get, type: DecodableConsents.self)
+        
+        self.consent_needed = basiq_res.size == 0
+        self.basiq_consents = basiq_res
+    }
+    
+    private func checkConnections() async throws {
+        let basiq_res = try await BasiqApi.api!.req("users/{id}", method: .get, type: DecodableBasiqReqUser.self)
+        
+        self.connections_needed = basiq_res.connections.count == 0
     }
     
 //    MARK: Firestore listener for async updates
 //    TODO: Handle errors
-    func addDbListener () throws {
+    private func addDbListener () throws {
         let userRef = db.collection("users").document(self.fir_user.uid)
         
 //        Listen for updates to the users database
@@ -90,7 +113,6 @@ class User: ObservableObject {
                 }
                                 
                 var userData: DBUser?
-                print("got user")
                 
                 do {
                     let decoder = Firestore.Decoder()
@@ -105,6 +127,8 @@ class User: ObservableObject {
                 self.lastRefresh = userData?.lastRefresh
                 self.basiq_user = userData != nil ? userData!.basiqUser : self.basiq_user
                 self.name = userData != nil ? userData!.name : self.name
+                
+                User.current = self
             }
         }
         
@@ -121,6 +145,8 @@ class User: ObservableObject {
                     } catch {
                         print("could not get transactions for acc \(acc.name)")
                     }
+                    
+                    User.current = self
                 }
             }
         }
@@ -128,7 +154,7 @@ class User: ObservableObject {
 
 //    TODO: Move to backend since it already performs similar operations
     @MainActor
-    func getAccounts(_ basiq: BasiqApi) async throws {
+    private func getAccounts(_ basiq: BasiqApi) async throws {
         let decoded_acc_data = try await basiq.req("users/{id}/accounts", method: .get, type: DecodableAccounts.self)
         let decoded_accs = decoded_acc_data.data
         var formatted_accs:[Account] = []

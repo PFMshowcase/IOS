@@ -1,6 +1,3 @@
-// ter
-
-
 javascript:(function() {
     function log(emoji, type, args) {
           window.webkit.messageHandlers.logging.postMessage(
@@ -16,12 +13,12 @@ javascript:(function() {
     let originalError = console.error
     let originalDebug = console.debug
 
-    console.log = function() { log("�", "log", arguments); originalLog.apply(null, arguments) }
-    console.warn = function() { log("�", "warning", arguments); originalWarn.apply(null, arguments) }
-    console.error = function() { log("�", "error", arguments); originalError.apply(null, arguments) }
-    console.debug = function() { log("�", "debug", arguments); originalDebug.apply(null, arguments) }
+    console.log = function() { log("🟢", "log", arguments); originalLog.apply(null, arguments) }
+    console.warn = function() { log("🟠", "warning", arguments); originalWarn.apply(null, arguments) }
+    console.error = function() { log("🔴", "error", arguments); originalError.apply(null, arguments) }
+    console.debug = function() { log("🔵", "debug", arguments); originalDebug.apply(null, arguments) }
 
     window.addEventListener("error", function(e) {
-       log("�", "Uncaught", [`${e.message} at ${e.filename}:${e.lineno}:${e.colno}`])
+       log("⛔️", "Uncaught", [`${e.message} at: ${e.lineno}:${e.colno}`])
     })
 })()

@@ -10,6 +10,17 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var user: User
+    
+    func refresh() {
+        Task {
+            do {
+                try await user.refreshBasiq()
+            } catch {
+//                Toast here
+                print(error.localizedDescription)
+            }
+        }
+    }
         
     var body: some View {
         NavigationView {
@@ -17,6 +28,8 @@ struct HomeView: View {
                 VStack (spacing:30) {
                     HStack {
                         Text("Hello, " + (user.name.first)).font(.h1)
+//                        Spacer()
+//                        Button("refresh", action: refresh)
                     }
                     .hAlignment()
                     
@@ -40,7 +53,7 @@ struct HomeView: View {
                             .font(.h1)
                             .hAlignment()
                         
-                        AccountSectionHomeView() 
+                        AccountSectionHomeView()
                             .hAlignment()
                             .padding(.vertical, 10)
                     }
@@ -69,8 +82,6 @@ struct HomeView: View {
                     }
                     .hAlignment(.center)
                 }
-//                .scrollBounceBehavior(.basedOnSize)
-                
             }
             .padding(.all, 15)
             .bAlignment(.center)

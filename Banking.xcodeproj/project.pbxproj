@@ -34,6 +34,8 @@
 		6E9AC1FC2A4EF7A000A8EA6A /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FB2A4EF7A000A8EA6A /* WebView.swift */; };
 		6E9AC1FE2A4EF7FB00A8EA6A /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FD2A4EF7FB00A8EA6A /* Files.swift */; };
 		6E9AC2002A4FBA3700A8EA6A /* ForwardLogsToConsole.js in Resources */ = {isa = PBXBuildFile; fileRef = 6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */; };
+		6E9AC2022A4FDF7600A8EA6A /* BasiqConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC2012A4FDF7600A8EA6A /* BasiqConnections.swift */; };
+		6E9AC2042A4FE82000A8EA6A /* Consents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9AC2032A4FE82000A8EA6A /* Consents.swift */; };
 		6EAD85592A0CB5170064E595 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD85582A0CB5170064E595 /* AuthUtils.swift */; };
 		6EAD85612A0CD33A0064E595 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85602A0CD33A0064E595 /* SDWebImageSwiftUI */; };
 		6EAD85642A0CD38E0064E595 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 6EAD85632A0CD38E0064E595 /* SDWebImageSVGCoder */; };
@@ -152,7 +154,9 @@
 		6E9AC1F92A4E8C8C00A8EA6A /* WebViewPadding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WebViewPadding.js; sourceTree = "<group>"; };
 		6E9AC1FB2A4EF7A000A8EA6A /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		6E9AC1FD2A4EF7FB00A8EA6A /* Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Files.swift; sourceTree = "<group>"; };
-		6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ForwardLogsToConsole.js; sourceTree = "<group>"; };
+		6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ForwardLogsToConsole.js; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.javascript; };
+		6E9AC2012A4FDF7600A8EA6A /* BasiqConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiqConnections.swift; sourceTree = "<group>"; };
+		6E9AC2032A4FE82000A8EA6A /* Consents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consents.swift; sourceTree = "<group>"; };
 		6EAD85582A0CB5170064E595 /* AuthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		6EAD85652A0CFA710064E595 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EAD85942A0CFF7A0064E595 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -274,6 +278,8 @@
 				6E4C75B22A3415AA0016539A /* Transactions.swift */,
 				6E4C75B42A34339D0016539A /* Enrich.swift */,
 				6E4C75BA2A37F3880016539A /* DBUser.swift */,
+				6E9AC2012A4FDF7600A8EA6A /* BasiqConnections.swift */,
+				6E9AC2032A4FE82000A8EA6A /* Consents.swift */,
 			);
 			path = Decodable;
 			sourceTree = "<group>";
@@ -336,13 +342,13 @@
 			path = "Transactions Page";
 			sourceTree = "<group>";
 		};
-		6E9AC1F82A4E8C2500A8EA6A /* Utils */ = {
+		6E9AC1F82A4E8C2500A8EA6A /* WebView Utils */ = {
 			isa = PBXGroup;
 			children = (
 				6E9AC1F92A4E8C8C00A8EA6A /* WebViewPadding.js */,
 				6E9AC1FF2A4FBA3700A8EA6A /* ForwardLogsToConsole.js */,
 			);
-			path = Utils;
+			path = "WebView Utils";
 			sourceTree = "<group>";
 		};
 		6EAD85962A0E04690064E595 /* Signing */ = {
@@ -474,7 +480,7 @@
 				6EC362BE2A09247500541040 /* Fonts */,
 				6E3EAEAE2A2F0C1200A6815F /* SwiftUIUtils */,
 				6EC362AE29F7B7A800541040 /* Views */,
-				6E9AC1F82A4E8C2500A8EA6A /* Utils */,
+				6E9AC1F82A4E8C2500A8EA6A /* WebView Utils */,
 				6EC362B129F7BBFA00541040 /* Models */,
 				6EF2991829E69EEA00D91255 /* BankingApp.swift */,
 				6EF2991C29E69EEE00D91255 /* Assets.xcassets */,
@@ -720,6 +726,7 @@
 				6E4C75B32A3415AA0016539A /* Transactions.swift in Sources */,
 				6E5C8AF42A44065E00BEAFF4 /* NavView.swift in Sources */,
 				6EED4B272A2D757200CA60FD /* Errors.swift in Sources */,
+				6E9AC2022A4FDF7600A8EA6A /* BasiqConnections.swift in Sources */,
 				6E5C8AFB2A44A60E00BEAFF4 /* SingleAccountView.swift in Sources */,
 				6E9AC1FE2A4EF7FB00A8EA6A /* Files.swift in Sources */,
 				6EAD85A52A0F5DF00064E595 /* SignIn.swift in Sources */,
@@ -731,6 +738,7 @@
 				6E553CBF2A302FA7007224F8 /* BasiqConsentView.swift in Sources */,
 				6E5C8AF92A4489EB00BEAFF4 /* InsightsView.swift in Sources */,
 				6E910DFD2A323F7500568F10 /* Institutions.swift in Sources */,
+				6E9AC2042A4FE82000A8EA6A /* Consents.swift in Sources */,
 				6E4C75C02A3800670016539A /* Name.swift in Sources */,
 				6E5C8B022A44A65B00BEAFF4 /* TransactionsView.swift in Sources */,
 				6EC362AD29F7B5D100541040 /* AccountSectionHomeView.swift in Sources */,

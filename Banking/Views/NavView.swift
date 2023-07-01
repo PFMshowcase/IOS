@@ -90,10 +90,3 @@ struct TabBarView: View {
         
     }
 }
-
-
-struct TestAcc: View {
-    var body: some View {
-        Text("accoutns")
-    }
-}

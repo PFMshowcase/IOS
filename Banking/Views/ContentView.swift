@@ -12,13 +12,14 @@ struct ContentView: View {
     
     var body: some View {
         if auth.user != nil {
-            switch auth.user!.accounts {
-            case nil: BasiqConsentView()
-                        .environmentObject(auth.user!)
-                        .environmentObject(auth)
-            default: TabBarView()
-                        .environmentObject(auth.user!)
-                        .environmentObject(auth)
+            if auth.user!.connections_needed || auth.user!.consent_needed {
+                BasiqConsentView()
+                    .environmentObject(auth)
+                    .environmentObject(auth.user!)
+            } else {
+                TabBarView()
+                    .environmentObject(auth.user!)
+                    .environmentObject(auth)
             }
         } else {
             SigningView()
